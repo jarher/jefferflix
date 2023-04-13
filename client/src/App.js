@@ -1,7 +1,9 @@
+import Button from "./components/Button/Button.jsx";
+
 function App() {
   return (
     <>
-      <h1>inicio</h1>
+     <Button classes="button" text={"inicio"}/>
     </>
   );
 }

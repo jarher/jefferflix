@@ -1,0 +1,1 @@
+Aplicación realizada con react para ver y organizar videos.

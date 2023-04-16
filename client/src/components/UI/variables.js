@@ -4,6 +4,7 @@ export const color_black = "#000000";
 export const color_black_200 = "#000000e6";
 export const color_gray_900 = "#00000099";
 export const color_gray_800 = "#00000080";
+export const color_gray_750 = "#53585D";
 export const color_gray_700 = "#9E9E9E";
 export const color_gray_300 = "#C2C2C2";
 export const color_gray_200 = "#E5E5E5";

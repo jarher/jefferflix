@@ -40,9 +40,9 @@ const ButtonFooter = styled(ButtonStyle)`
 const Footer = () => {
   return (
     <FooterStyle>
-      <BannerFooter />
+      {/* <BannerFooter /> */}
       <ButtonFooter>
-        <Link to="url">Nuevo Video</Link>
+        <Link to="/newVideo">Nuevo Video</Link>
       </ButtonFooter>
     </FooterStyle>
   );

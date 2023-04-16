@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const BannerStyle = styled.div`
@@ -10,7 +11,9 @@ const BannerStyle = styled.div`
 const Banner = () => {
   return (
     <BannerStyle>
-      <img src="/img/jefferflix-logo.png" alt="jefferflix logo" />
+      <Link to="/">
+        <img src="/img/jefferflix-logo.png" alt="jefferflix logo" />
+      </Link>
     </BannerStyle>
   );
 };

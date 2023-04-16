@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import {  color_black_200 } from "../components/UI/variables";
+import {  color_black_200 } from "../components/UI/variables.js";
 import Video from "../components/Video/Video.jsx";
-import Carousel from "../components/Carousel/Carousel/Carousel";
-import SimpleSlider from "../components/Carousel/Slider/Slider";
+import Carousel from "../components/Carousel/Carousel/Carousel.jsx";
+import SimpleSlider from "../components/Carousel/Slider/Slider.jsx";
 
-const HomeStyled = styled.div`
+export const HomeStyled = styled.div`
   background-color: ${color_black_200};
   min-height: 80vh;
   display: flex;

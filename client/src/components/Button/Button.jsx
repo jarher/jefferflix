@@ -1,7 +1,8 @@
-const Button = ({ classes, text, url, func }) => (
-  <button className={classes} onClick={func}>
-    <a href={url}>{text}</a>
-  </button>
-);
+import styled from "styled-components";
 
-export default Button;
+const ButtonStyle = styled.button`
+  font-family: "SourceSansPro", sans-serif;
+  padding: 1%;
+`;
+
+export default ButtonStyle;

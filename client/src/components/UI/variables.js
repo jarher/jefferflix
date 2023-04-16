@@ -18,3 +18,5 @@ export const body_normal = "21px";
 export const body_medium = "18px";
 export const body_small = "16px";
 export const body_smaller = "12px";
+export const font_weight_600 = 600;
+export const font_weight_300 = 300;

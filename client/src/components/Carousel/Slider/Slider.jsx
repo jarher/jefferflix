@@ -4,9 +4,33 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import Videocard from "../Videocard/Videocard";
+import ButtonStyle from "../../Button/Button";
+import {
+  body_small,
+  body_smaller,
+  color_gray_lighter,
+  font_weight_300,
+  font_weight_600,
+} from "../../UI/variables";
 
 const SliderContainer = styled.div`
-    margin: 5%;
+  margin: 5%;
+`;
+
+const CategoryButton = styled(ButtonStyle)`
+  background-color: green;
+  font-size: ${body_small};
+  font-weight: ${font_weight_600};
+  margin-left: 2%;
+  color: ${color_gray_lighter};
+  padding-left: 2%;
+  padding-right: 2%;
+`;
+const SubtitleCategory = styled.h3`
+  color: ${color_gray_lighter};
+  font-size: ${body_smaller};
+  font-weight: ${font_weight_300};
+  margin: 3% 0 1% 2%;
 `;
 
 export default class SimpleSlider extends Component {
@@ -20,7 +44,8 @@ export default class SimpleSlider extends Component {
     };
     return (
       <SliderContainer>
-        <h2> Single Item</h2>
+        <CategoryButton>Front End</CategoryButton>
+        <SubtitleCategory>Formación frontend de alura latam</SubtitleCategory>
         <Slider {...settings}>
           <Videocard imgUrl={"/img/VideoCard.png"} alt={"videocard"} />
           <Videocard imgUrl={"/img/VideoCard2.png"} alt={"videocard"} />
@@ -31,5 +56,3 @@ export default class SimpleSlider extends Component {
     );
   }
 }
-
-

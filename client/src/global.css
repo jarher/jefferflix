@@ -60,3 +60,6 @@ img{
 .slick-arrow{
   display: none!important;
 }
+.slick-active button{
+  color: white!important;
+}

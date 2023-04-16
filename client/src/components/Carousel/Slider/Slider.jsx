@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
+import Videocard from "../Videocard/Videocard";
 
 const SliderContainer = styled.div`
     margin: 5%;
@@ -21,24 +22,10 @@ export default class SimpleSlider extends Component {
       <SliderContainer>
         <h2> Single Item</h2>
         <Slider {...settings}>
-          <div>
-            <img src="/img/VideoCard.png" alt="videocard" />
-          </div>
-          <div>
-            <img src="/img/VideoCard2.png" alt="videocard" />
-          </div>
-          <div>
-            <img src="/img/VideoCard.png" alt="videocard" />
-          </div>
-          <div>
-            <h3>4</h3>
-          </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
-          </div>
+          <Videocard imgUrl={"/img/VideoCard.png"} alt={"videocard"} />
+          <Videocard imgUrl={"/img/VideoCard2.png"} alt={"videocard"} />
+          <Videocard imgUrl={"/img/VideoCard.png"} alt={"videocard"} />
+          <Videocard imgUrl={"/img/VideoCard2.png"} alt={"videocard"} />
         </Slider>
       </SliderContainer>
     );

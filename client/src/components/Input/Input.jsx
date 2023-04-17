@@ -39,6 +39,9 @@ const Textarea = styled.textarea`
   color: ${color_gray_300};
   font-family: "Roboto-Light", sans-serif;
   width: 100%;
+  &::placeholder {
+    color: ${color_gray_300};
+  }
 `;
 
 const ErrorMessage = styled.span`
@@ -55,11 +58,11 @@ const Input = ({ element, labelText, type, placeholder }) => {
       <InputWrapper>
         {element === "input" && (
           <>
-            <Label>Titulo</Label>
-            <InputStyle />
+            <Label>{labelText}</Label>
+            <InputStyle type={type} placeholder={placeholder} />
           </>
         )}
-        {element === "textarea" && <Textarea />}
+        {element === "textarea" && <Textarea placeholder={placeholder}/>}
       </InputWrapper>
       <ErrorMessage>Error</ErrorMessage>
     </FormWrapper>

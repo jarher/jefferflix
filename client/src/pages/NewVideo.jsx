@@ -3,57 +3,19 @@ import Form from "../components/Form/Form.jsx";
 import { HomeStyled } from "./Home.jsx";
 import Input from "../components/Input/Input.jsx";
 import {
-  color_gray_lighter,
-  title_small,
-  body_normal,
   body_small,
-  color_gray_900,
-  color_gray_700,
-  color_white,
-  color_primary,
-  font_weight_600,
 } from "../components/UI/variables.js";
-import ButtonStyle from "../components/Button/Button.jsx";
 import { Link } from "react-router-dom";
+import FormTitle from "../components/Form/FormTitle.jsx";
+import FormButton from "../components/Form/FormButton.jsx";
+import FormButtonsContainer from "../components/Form/FormButtonsContainer.jsx";
+import ButtonsSubmit from "../components/Form/ButtonsSubmit.jsx";
 
 const NewVideoContainer = styled(HomeStyled)`
   padding: 5%;
 `;
-const FormTitle = styled.h1`
-  font-family: "Roboto-regular", sans-serif;
-  font-size: ${title_small};
-  text-align: center;
-  color: ${color_gray_lighter};
-  margin: 5% 0 15%;
-`;
 
-const FormButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap:10px
-`;
-
-const ButtonsSubmit = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;
-
-const ButtonSubmit = styled(ButtonStyle)`
-  font-family: "SourceSansPro", sans-serif;
-  font-size: ${body_normal};
-  font-weight: ${font_weight_600};
-  background-color: ${color_primary};
-  color:${color_white};
-  width: 135px;
-`;
-
-const ButtonClean = styled(ButtonSubmit)`
-  background-color: ${color_gray_700};
-  color: ${color_gray_900};
-`;
-
-const ButtonRedirect = styled(ButtonSubmit)`
+const ButtonRedirect = styled(FormButton)`
   font-size: ${body_small};
   align-self: end;
 `;
@@ -63,18 +25,22 @@ const NewVideo = () => {
     <NewVideoContainer>
       <Form>
         <FormTitle>Nuevo Video</FormTitle>
-        <Input element={"input"} />
-        <Input element={"input"} />
-        <Input element={"textarea"} />
-        <FormButtons>
+        <Input
+          element={"input"}
+          labelText={"Título"}
+          type="text"
+          placeholder={"título"}
+        />
+        <Input element={"textarea"} placeholder={"Descripción"} />
+        <FormButtonsContainer>
           <ButtonsSubmit>
-            <ButtonSubmit>Guardar</ButtonSubmit>
-            <ButtonClean>Limpiar</ButtonClean>
+            <FormButton>Guardar</FormButton>
+            <FormButton $clean>Limpiar</FormButton>
           </ButtonsSubmit>
           <ButtonRedirect>
             <Link to="/newCategory">Nueva Categoría</Link>
           </ButtonRedirect>
-        </FormButtons>
+        </FormButtonsContainer>
       </Form>
     </NewVideoContainer>
   );

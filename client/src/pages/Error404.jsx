@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { body_big, color_error_dark } from "../components/UI/variables.js";
+import { HomeStyled } from "./Home.jsx";
 
-const ErrorContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
+const ErrorContainer = styled(HomeStyled)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ErrorMessage = styled.p`
@@ -13,7 +14,7 @@ const ErrorMessage = styled.p`
 `;
 
 const Error404 = () => {
-    <ErrorContainer>
+    return <ErrorContainer>
         <ErrorMessage>
             ¡Página no encontrada!
         </ErrorMessage>

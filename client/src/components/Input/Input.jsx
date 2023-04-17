@@ -5,6 +5,7 @@ import {
   body_smaller,
   body_small,
   color_gray_300,
+  color_primary,
 } from "../UI/variables.js";
 
 const FormWrapper = styled.div`
@@ -14,15 +15,33 @@ const FormWrapper = styled.div`
 `;
 
 const InputWrapper = styled.div`
+  position: relative;
   background-color: ${color_gray_750};
-  padding: 3% 1%;
+  padding: 4% 1%;
   border-radius: 4px;
 `;
 
 const InputStyle = styled.input`
   background-color: transparent;
+  color: ${color_gray_300};
   outline: none;
   border: none;
+  padding-top: 2%;
+
+  &&:not(:placeholder-shown) + label,
+  &:focus + label {
+    font-size: ${body_smaller};
+    top: 4px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    visibility: hidden;
+    color: #00000000;
+  }
 `;
 
 const Label = styled.label`
@@ -30,6 +49,9 @@ const Label = styled.label`
   font-size: ${body_small};
   color: ${color_gray_300};
   font-family: "Roboto-Light", sans-serif;
+  left: 5px;
+  top:16px;
+  transition: all 0.2s ease-in-out;
 `;
 
 const Textarea = styled.textarea`
@@ -58,11 +80,11 @@ const Input = ({ element, labelText, type, placeholder }) => {
       <InputWrapper>
         {element === "input" && (
           <>
-            <Label>{labelText}</Label>
             <InputStyle type={type} placeholder={placeholder} />
+            <Label>{labelText}</Label>
           </>
         )}
-        {element === "textarea" && <Textarea placeholder={placeholder}/>}
+        {element === "textarea" && <Textarea placeholder={placeholder} />}
       </InputWrapper>
       <ErrorMessage>Error</ErrorMessage>
     </FormWrapper>

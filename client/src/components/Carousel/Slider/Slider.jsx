@@ -24,14 +24,14 @@ const CategoryButton = styled(ButtonStyle)`
   font-family: "Roboto-Light", sans-serif;
   margin-left: 2%;
   color: ${color_gray_lighter};
-  padding:3%
+  padding:3%;
 `;
 const SubtitleCategory = styled.h3`
   color: ${color_gray_lighter};
   font-size: ${body_smaller};
   font-weight: ${font_weight_300};
   margin: 3% 0 1% 2%;
-  font-family: "Roboto-Light",sans-serif;;
+  font-family: "Roboto-Light",sans-serif;
 `;
 
 export default class SimpleSlider extends Component {

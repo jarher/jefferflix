@@ -53,6 +53,11 @@ img{
   width: 100%;
   height: auto;
 }
+input, select, textarea{
+  border: none;
+  outline: none;
+}
+
 .slick-arrow{
   display: none!important;
 }

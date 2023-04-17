@@ -8,6 +8,31 @@ import ButtonsSubmit from "../components/Form/ButtonsSubmit";
 import FormButton from "../components/Form/FormButton";
 import { HomeStyled } from "./Home";
 
+const formInputs = [
+  {
+    element: "input",
+    labelText: "Título",
+    type: "text",
+    placeholder: "título",
+  },
+  {
+    element: "input",
+    labelText: "color",
+    type: "color",
+    colorDefault: "#FFBA05",
+  },
+  {
+    element: "textarea",
+    placeholder: "Descripción",
+  },
+  {
+    element: "input",
+    labelText: "Usuario",
+    type: "text",
+    placeholder: "Usuario",
+  }
+];
+
 const NewCategoryContainer = styled(HomeStyled)`
   padding: 5%;
 `;
@@ -17,12 +42,9 @@ const NewCategory = () => {
       <NewCategoryContainer>
         <Form>
           <FormTitle>Nueva Categoría</FormTitle>
-          <Input
-            element={"input"}
-            labelText={"Título"}
-            type="text"
-            placeholder={"título"}
-          />
+          {formInputs.map((element) => (
+            <Input element={element} />
+          ))}
           <FormButtonsContainer>
             <ButtonsSubmit>
               <FormButton>Guardar</FormButton>

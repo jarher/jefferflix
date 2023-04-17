@@ -5,7 +5,6 @@ import {
   body_smaller,
   body_small,
   color_gray_300,
-  color_primary,
 } from "../UI/variables.js";
 
 const FormWrapper = styled.div`
@@ -24,9 +23,9 @@ const InputWrapper = styled.div`
 const InputStyle = styled.input`
   background-color: transparent;
   color: ${color_gray_300};
-  outline: none;
-  border: none;
   padding-top: 2%;
+  width: 100%;
+  height: 5vh;
 
   &&:not(:placeholder-shown) + label,
   &:focus + label {
@@ -50,14 +49,23 @@ const Label = styled.label`
   color: ${color_gray_300};
   font-family: "Roboto-Light", sans-serif;
   left: 5px;
-  top:16px;
+  top: 16px;
   transition: all 0.2s ease-in-out;
+`;
+
+const Select = styled.select`
+  width: 100%;
+  background-color: transparent;
+  color: ${color_gray_300};
+`;
+
+const Option = styled.option`
+  background-color: transparent;
+  color: ${color_gray_300};
 `;
 
 const Textarea = styled.textarea`
   background-color: transparent;
-  border: none;
-  outline: none;
   color: ${color_gray_300};
   font-family: "Roboto-Light", sans-serif;
   width: 100%;
@@ -74,15 +82,44 @@ const ErrorMessage = styled.span`
   font-family: "Roboto-Light", sans-serif;
 `;
 
-const Input = ({ element, labelText, type, placeholder }) => {
+const Input = (props) => {
+  const {
+    element,
+    labelText,
+    optionDefault,
+    selectOptions,
+    type,
+    colorDefault,
+    placeholder,
+  } = props.element;
   return (
     <FormWrapper>
       <InputWrapper>
         {element === "input" && (
           <>
-            <InputStyle type={type} placeholder={placeholder} />
-            <Label>{labelText}</Label>
+            {colorDefault ? (
+              <InputStyle type={type} id={labelText} value={colorDefault} />
+            ) : (
+              <InputStyle
+                type={type}
+                id={{ labelText }}
+                placeholder={placeholder}
+              />
+            )}
+            <Label htmlFor={labelText}>{labelText}</Label>
           </>
+        )}
+        {element === "select" && (
+          <Select>
+            <Option disabled>
+              {optionDefault}
+            </Option>
+            {selectOptions.map((option) => (
+              <Option value={option.value} key={option.value}>
+                {option.value}
+              </Option>
+            ))}
+          </Select>
         )}
         {element === "textarea" && <Textarea placeholder={placeholder} />}
       </InputWrapper>

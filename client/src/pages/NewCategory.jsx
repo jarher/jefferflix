@@ -40,7 +40,7 @@ const NewCategoryContainer = styled(HomeStyled)`
 const NewCategory = () => {
     return (
       <NewCategoryContainer>
-        <Form>
+        {/* <Form>
           <FormTitle>Nueva Categoría</FormTitle>
           {formInputs.map((element) => (
             <Input element={element} />
@@ -51,7 +51,7 @@ const NewCategory = () => {
               <FormButton $clean>Limpiar</FormButton>
             </ButtonsSubmit>
           </FormButtonsContainer>
-        </Form>
+        </Form> */}
       </NewCategoryContainer>
     );
 }

@@ -108,11 +108,12 @@ const NewVideo = () => {
           <Error message={"message"} />
         </FormWrapper>
         <FormWrapper>
-          <Select Options={options} inputFunction={setSelected} selected={selected}/>
+          <Select Options={options} inputFunction={setSelected} />
+          <Error message={"message"} />
         </FormWrapper>
         <FormWrapper>
           <Textarea
-          value={description}
+            value={description}
             placeholder={"Descripción"}
             inputFunction={setDescription}
           />

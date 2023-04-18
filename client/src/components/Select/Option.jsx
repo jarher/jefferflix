@@ -7,8 +7,8 @@ const OptionStyle = styled.option`
   color: ${color_gray_300};
 `;
 
-const Option = ({ value, disabled }) => (
-  <OptionStyle value={value.toLowerCase()} disabled={disabled}>
+const Option = ({ value, disabled, selected }) => (
+  <OptionStyle value={value.toLowerCase()} disabled={disabled} selected={selected}>
     {value}
   </OptionStyle>
 );

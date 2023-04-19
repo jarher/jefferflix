@@ -18,7 +18,7 @@ const InputStyle = styled.input`
   color: ${color_gray_300};
   padding-top: 2%;
   width: 100%;
-  height: 3vh;
+  height: ${(props) => props.type === "color" ? "7vh" : "3vh"};
 
   &&:not(:placeholder-shown) + label,
   &:focus + label {

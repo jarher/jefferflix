@@ -14,7 +14,7 @@ const CardInfo = styled.div`
   margin-top: 5%;
 `;
 
-const CreationDate = styled.div`
+const CreationDate = styled.span`
 `;
 
 const Videocard = ({ imgUrl, alt }) => {
@@ -23,7 +23,7 @@ const Videocard = ({ imgUrl, alt }) => {
       <img src={imgUrl} alt={alt} />
       <CardInfo>
         <div>
-          Fecha de creación <CreationDate></CreationDate>
+          Fecha de creación <CreationDate>11/11/2011</CreationDate>
         </div>
         <RiDeleteBin6Line />
       </CardInfo>

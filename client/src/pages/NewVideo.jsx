@@ -14,42 +14,6 @@ import FormWrapper from "../components/Form/FormWrapper.jsx";
 import Error from "../components/Form/ErrorMessage.jsx";
 import Select from "../components/Select/Select.jsx";
 
-const formInputs = [
-  {
-    element: "input",
-    labelText: "Título",
-    type: "text",
-    placeholder: "título",
-  },
-  {
-    element: "input",
-    labelText: "Link del vídeo",
-    type: "text",
-    placeholder: "Link del vídeo",
-  },
-  {
-    element: "input",
-    labelText: "Link de la imagen del vídeo",
-    type: "text",
-    placeholder: "Link de la imagen del vídeo",
-  },
-  {
-    element: "select",
-    optionDefault: "Escoja una categoría",
-    selectOptions: [{ value: "Front End" }, { value: "Back End" }],
-  },
-  {
-    element: "textarea",
-    placeholder: "Descripción",
-  },
-  {
-    element: "input",
-    labelText: "Usuario",
-    type: "text",
-    placeholder: "Usuario",
-  },
-];
-
 const NewVideoContainer = styled(HomeStyled)`
   padding: 5%;
 `;
@@ -60,16 +24,15 @@ const ButtonRedirect = styled(FormButton)`
 `;
 
 const options = [
-  { id: 1, value: "Escoja una categoría", default: true, isSelected: true },
-  { id: 2, value: "Front End", default: false, isSelected: false },
-  { id: 3, value: "Back End", default: false, isSelected: false },
+  { id: 1, value: "Front End"},
+  { id: 2, value: "Back End"},
 ];
 
 const NewVideo = () => {
   const [title, setTitle] = useState("");
   const [videoLink, setVideoLink] = useState("");
   const [backgroundVideo, setBackgroundVideo] = useState("");
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("Front End");
   const [description, setDescription] = useState("");
   const [user, setUser] = useState("");
 
@@ -108,7 +71,7 @@ const NewVideo = () => {
           <Error message={"message"} />
         </FormWrapper>
         <FormWrapper>
-          <Select Options={options} inputFunction={setSelected} />
+          <Select Options={options} inputFunction={setSelected} selected={selected}/>
           <Error message={"message"} />
         </FormWrapper>
         <FormWrapper>

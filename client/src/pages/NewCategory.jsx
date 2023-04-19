@@ -13,6 +13,9 @@ import Textarea from "../components/Textarea/Textarea.jsx";
 
 const NewCategoryContainer = styled(HomeStyled)`
   padding: 5%;
+  @media (min-width: 768px) {
+    align-items: center;
+  }
 `;
 
 const NewCategory = () => {

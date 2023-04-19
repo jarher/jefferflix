@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { color_gray_300 } from "../UI/variables";
+import { body_medium, color_gray_300 } from "../UI/variables";
 import { InputWrapper } from "../Input/Input";
 
 const TextareaStyle = styled.textarea`
@@ -9,6 +9,11 @@ const TextareaStyle = styled.textarea`
   width: 100%;
   &::placeholder {
     color: ${color_gray_300};
+  }
+  @media (min-width: 768px) {
+    &::placeholder {
+      font-size: ${body_medium};
+    }
   }
 `;
 

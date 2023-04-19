@@ -33,11 +33,18 @@ const ButtonFooter = styled(ButtonStyle)`
 
 const BannerContainer = styled.div`
   padding: 5%;
+  @media (min-width: 768px) {
+    padding: 1% 0 3%;
+  }
 `;
 
 const Author = styled.div`
   color: ${color_gray_lighter};
   margin-top: 5%;
+  text-align: center;
+  @media (min-width: 768px) {
+    display: none;
+  }
 `;
 
 const Footer = () => {

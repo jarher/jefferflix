@@ -3,9 +3,9 @@ import styled from "styled-components";
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  /* @media (min-width: 768px) {
-    max-width: 1024px;
-  } */
+  @media (min-width: 768px) {
+    min-width: 710px;
+  }
 `;
 
 

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { color_gray_300, color_gray_750} from "../UI/variables.js";
+import { body_medium, color_gray_300, color_gray_750} from "../UI/variables.js";
 import Option from "./Option.jsx";
 
 const SelectStyle = styled.select`
@@ -14,6 +14,9 @@ const SelectStyle = styled.select`
 
 const LabelSelect = styled.label`
 color: ${color_gray_300};
+@media (min-width: 768px) {
+  font-size: ${body_medium};
+}
 `;
 
 const Select = ({ Options, inputFunction, selected }) => 

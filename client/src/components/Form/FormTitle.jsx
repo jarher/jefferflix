@@ -7,6 +7,9 @@ const FormTitle = styled.h1`
   text-align: center;
   color: ${color_gray_lighter};
   margin: 5% 0 15%;
+  @media (min-width: 768px) {
+    margin: 0 0 5%;
+  }
 `;
 
 export default FormTitle;

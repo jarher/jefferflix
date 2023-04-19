@@ -16,17 +16,23 @@ import Select from "../components/Select/Select.jsx";
 
 const NewVideoContainer = styled(HomeStyled)`
   padding: 5%;
-  align-items: center;
+  @media (min-width: 768px) {
+    align-items: center;
+  }
 `;
 
 const ButtonRedirect = styled(FormButton)`
   font-size: ${body_small};
   align-self: end;
+  @media (min-width: 768px) {
+    width: 180px;
+    padding: 2%;
+  }
 `;
 
 const options = [
-  { id: 1, value: "Front End"},
-  { id: 2, value: "Back End"},
+  { id: 1, value: "Front End" },
+  { id: 2, value: "Back End" },
 ];
 
 const NewVideo = () => {
@@ -44,7 +50,7 @@ const NewVideo = () => {
     setSelected("Front End");
     setDescription("");
     setUser("");
-  }
+  };
 
   const formSubmit = (e) => {
     e.preventDefault();

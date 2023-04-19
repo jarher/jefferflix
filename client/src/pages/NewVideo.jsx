@@ -16,6 +16,7 @@ import Select from "../components/Select/Select.jsx";
 
 const NewVideoContainer = styled(HomeStyled)`
   padding: 5%;
+  align-items: center;
 `;
 
 const ButtonRedirect = styled(FormButton)`

@@ -22,10 +22,13 @@ const Home = () => {
     <HomeStyled>
       <Video />
       <Carousel>
-        <SimpleSlider />
+        <SimpleSlider color={"red"} />
       </Carousel>
       <Carousel>
-        <SimpleSlider />
+        <SimpleSlider color={"green"} />
+      </Carousel>
+      <Carousel>
+        <SimpleSlider color={"blue"} />
       </Carousel>
     </HomeStyled>
   );

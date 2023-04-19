@@ -12,15 +12,22 @@ const CardInfo = styled.div`
   color: ${color_gray_300};
   font-size: ${body_small};
   margin-top: 5%;
+  
 `;
+
+const CardImg = styled.img`
+  border: 3px solid ${(props) => props.borderColor};
+  border-radius: 5px;
+`;
+
 
 const CreationDate = styled.span`
 `;
 
-const Videocard = ({ imgUrl, alt }) => {
+const Videocard = ({ imgUrl, alt, border }) => {
   return (
     <Card>
-      <img src={imgUrl} alt={alt} />
+      <CardImg src={imgUrl} alt={alt} borderColor={border}/>
       <CardInfo>
         <div>
           Fecha de creación <CreationDate>11/11/2011</CreationDate>

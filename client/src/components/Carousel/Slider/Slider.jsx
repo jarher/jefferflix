@@ -18,7 +18,7 @@ const SliderContainer = styled.div`
 `;
 
 const CategoryButton = styled(ButtonStyle)`
-  background-color: green;
+  background-color: ${props => props.catColor};
   font-size: ${body_small};
   font-weight: ${font_weight_600};
   font-family: "Roboto-Light", sans-serif;
@@ -45,13 +45,29 @@ export default class SimpleSlider extends Component {
     };
     return (
       <SliderContainer>
-        <CategoryButton>Front End</CategoryButton>
+        <CategoryButton catColor={this.props.color}>Front End</CategoryButton>
         <SubtitleCategory>Formación frontend de alura latam</SubtitleCategory>
         <Slider {...settings}>
-          <Videocard imgUrl={"/img/VideoCard.png"} alt={"videocard"} />
-          <Videocard imgUrl={"/img/VideoCard2.png"} alt={"videocard"} />
-          <Videocard imgUrl={"/img/VideoCard.png"} alt={"videocard"} />
-          <Videocard imgUrl={"/img/VideoCard2.png"} alt={"videocard"} />
+          <Videocard
+            imgUrl={"/img/VideoCard.png"}
+            alt={"videocard"}
+            border={this.props.color}
+          />
+          <Videocard
+            imgUrl={"/img/VideoCard2.png"}
+            alt={"videocard"}
+            border={this.props.color}
+          />
+          <Videocard
+            imgUrl={"/img/VideoCard.png"}
+            alt={"videocard"}
+            border={this.props.color}
+          />
+          <Videocard
+            imgUrl={"/img/VideoCard2.png"}
+            alt={"videocard"}
+            border={this.props.color}
+          />
         </Slider>
       </SliderContainer>
     );

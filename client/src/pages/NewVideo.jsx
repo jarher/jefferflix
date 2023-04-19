@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Form from "../components/Form/Form.jsx";
-import { HomeStyled } from "./Home.jsx";
 import Input from "../components/Input/Input.jsx";
 import { body_small } from "../components/UI/variables.js";
 import { Link } from "react-router-dom";
@@ -13,8 +12,9 @@ import Textarea from "../components/Textarea/Textarea.jsx";
 import FormWrapper from "../components/Form/FormWrapper.jsx";
 import Error from "../components/Form/ErrorMessage.jsx";
 import Select from "../components/Select/Select.jsx";
+import { Layer } from "../components/Layer/Layer.jsx";
 
-const NewVideoContainer = styled(HomeStyled)`
+const NewVideoContainer = styled(Layer)`
   padding: 5%;
   @media (min-width: 768px) {
     align-items: center;

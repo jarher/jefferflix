@@ -5,6 +5,7 @@ import Home from "./pages/Home.jsx";
 import NewVideo from "./pages/NewVideo.jsx";
 import NewCategory from "./pages/NewCategory.jsx";
 import Error404 from "./pages/Error404.jsx";
+import Edit from "./pages/Edit.jsx";
 
 function App() {
   const Layout = () => {
@@ -25,6 +26,7 @@ function App() {
         { path: "/", element: <Home /> },
         { path: "/newVideo", element: <NewVideo /> },
         { path: "/newCategory", element: <NewCategory /> },
+        { path: "/edit/:id", element: <Edit /> },
         { path: "*", element: <Error404 /> },
       ],
     },

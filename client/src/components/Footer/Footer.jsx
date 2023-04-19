@@ -19,16 +19,6 @@ const FooterStyle = styled.footer`
   border-top: 1px solid ${color_primary};
 `;
 
-// const BannerFooter = styled(Banner)`
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   margin: 3% auto;
-//   display: none;
-// `;
-
 const ButtonFooter = styled(ButtonStyle)`
   border-radius: 0;
   font-size: ${body_normal};
@@ -51,6 +41,7 @@ const Author = styled.div`
 `;
 
 const Footer = () => {
+  
   return (
     <FooterStyle>
       <BannerContainer>
@@ -58,9 +49,9 @@ const Footer = () => {
         <Author>Sitio hecho por Jeffer Rojas</Author>
       </BannerContainer>
 
-      {/* <ButtonFooter>
+      <ButtonFooter>
         <Link to="/newVideo">Nuevo Video</Link>
-      </ButtonFooter> */}
+      </ButtonFooter>
     </FooterStyle>
   );
 };

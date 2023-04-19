@@ -36,9 +36,22 @@ const NewVideo = () => {
   const [description, setDescription] = useState("");
   const [user, setUser] = useState("");
 
+  const cleanForm = () => {
+    setTitle("");
+    setVideoLink("");
+    setBackgroundVideo("");
+    setSelected("Front End");
+    setDescription("");
+    setUser("");
+  }
+
+  const formSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <NewVideoContainer>
-      <Form>
+      <Form onSubmit={formSubmit}>
         <FormTitle>Nuevo Video</FormTitle>
         <FormWrapper>
           <Input
@@ -71,7 +84,11 @@ const NewVideo = () => {
           <Error message={"message"} />
         </FormWrapper>
         <FormWrapper>
-          <Select Options={options} inputFunction={setSelected} selected={selected}/>
+          <Select
+            Options={options}
+            inputFunction={setSelected}
+            selected={selected}
+          />
           <Error message={"message"} />
         </FormWrapper>
         <FormWrapper>
@@ -95,7 +112,9 @@ const NewVideo = () => {
         <FormButtonsContainer>
           <ButtonsSubmit>
             <FormButton>Guardar</FormButton>
-            <FormButton $clean>Limpiar</FormButton>
+            <FormButton $clean onClick={cleanForm}>
+              Limpiar
+            </FormButton>
           </ButtonsSubmit>
           <ButtonRedirect>
             <Link to="/newCategory">Nueva Categoría</Link>

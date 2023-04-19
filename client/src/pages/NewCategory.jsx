@@ -21,57 +21,70 @@ const NewCategory = () => {
   const [catDescription, setcatDescription] = useState("");
   const [catUser, setCatUser] = useState("");
 
-    return (
-      <NewCategoryContainer>
-        <Form>
-          <FormTitle>Nueva Categoría</FormTitle>
-          <FormWrapper>
-            <Input
-              type={"text"}
-              labelText={"Título"}
-              value={catTitle}
-              placeholder={"Título"}
-              inputFunction={setCatTitle}
-            />
-            <Error message={"message"} />
-          </FormWrapper>
-          <FormWrapper>
-            <Input
-              type={"color"}
-              labelText={"Color"}
-              value={catColor}
-              placeholder={""}
-              inputFunction={setCatColor}
-            />
-            <Error message={"message"} />
-          </FormWrapper>
-          <FormWrapper>
-            <Textarea
-              value={catDescription}
-              placeholder={"Descripción"}
-              inputFunction={setcatDescription}
-            />
-            <Error message={"message"} />
-          </FormWrapper>
-          <FormWrapper>
-            <Input
-              type={"text"}
-              labelText={"Usuario"}
-              value={catUser}
-              placeholder={"Usuario"}
-              inputFunction={setCatUser}
-            />
-            <Error message={"message"} />
-          </FormWrapper>
-          <FormButtonsContainer>
-            <ButtonsSubmit>
-              <FormButton>Guardar</FormButton>
-              <FormButton $clean>Limpiar</FormButton>
-            </ButtonsSubmit>
-          </FormButtonsContainer>
-        </Form>
-      </NewCategoryContainer>
-    );
-}
+  const cleanForm = () => {
+    setCatTitle("");
+    setCatColor("#FFBA05");
+    setcatDescription("");
+    setCatUser("");
+  };
+
+  const formSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <NewCategoryContainer>
+      <Form onSubmit={formSubmit}>
+        <FormTitle>Nueva Categoría</FormTitle>
+        <FormWrapper>
+          <Input
+            type={"text"}
+            labelText={"Título"}
+            value={catTitle}
+            placeholder={"Título"}
+            inputFunction={setCatTitle}
+          />
+          <Error message={"message"} />
+        </FormWrapper>
+        <FormWrapper>
+          <Input
+            type={"color"}
+            labelText={"Color"}
+            value={catColor}
+            placeholder={""}
+            inputFunction={setCatColor}
+          />
+          <Error message={"message"} />
+        </FormWrapper>
+        <FormWrapper>
+          <Textarea
+            value={catDescription}
+            placeholder={"Descripción"}
+            inputFunction={setcatDescription}
+          />
+          <Error message={"message"} />
+        </FormWrapper>
+        <FormWrapper>
+          <Input
+            type={"text"}
+            labelText={"Usuario"}
+            value={catUser}
+            placeholder={"Usuario"}
+            inputFunction={setCatUser}
+          />
+          <Error message={"message"} />
+        </FormWrapper>
+        <FormButtonsContainer>
+          <ButtonsSubmit>
+            <FormButton>Guardar</FormButton>
+            <FormButton $clean onClick={cleanForm}>
+              Limpiar
+            </FormButton>
+          </ButtonsSubmit>
+        </FormButtonsContainer>
+      </Form>
+    </NewCategoryContainer>
+  );
+};
 
 export default NewCategory;

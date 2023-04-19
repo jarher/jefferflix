@@ -1,8 +1,13 @@
 import styled from "styled-components";
 import Banner from "../Banner/Banner";
-import { body_normal, color_black, color_primary } from "../UI/variables.js";
+import {
+  body_normal,
+  color_black,
+  color_gray_lighter,
+  color_primary,
+} from "../UI/variables.js";
 import ButtonStyle from "../Button/Button.jsx";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const FooterStyle = styled.footer`
   display: flex;
@@ -12,38 +17,50 @@ const FooterStyle = styled.footer`
   position: relative;
   background-color: ${color_black};
   border-top: 1px solid ${color_primary};
-  height: 10vh;
 `;
 
-const BannerFooter = styled(Banner)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 3% auto;
-  display: none;
-`;
+// const BannerFooter = styled(Banner)`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   margin: 3% auto;
+//   display: none;
+// `;
 
 const ButtonFooter = styled(ButtonStyle)`
   border-radius: 0;
   font-size: ${body_normal};
   background-color: ${color_primary};
   width: 100%;
-  height: 15vh;
+  height: 10vh;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
 `;
 
+const BannerContainer = styled.div`
+  padding: 5%;
+`;
+
+const Author = styled.div`
+  color: ${color_gray_lighter};
+  margin-top: 5%;
+`;
+
 const Footer = () => {
   return (
     <FooterStyle>
-      {/* <BannerFooter /> */}
-      <ButtonFooter>
+      <BannerContainer>
+        <Banner />
+        <Author>Sitio hecho por Jeffer Rojas</Author>
+      </BannerContainer>
+
+      {/* <ButtonFooter>
         <Link to="/newVideo">Nuevo Video</Link>
-      </ButtonFooter>
+      </ButtonFooter> */}
     </FooterStyle>
   );
 };

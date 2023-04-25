@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import Banner from "../Banner/Banner.jsx";
-
 import {
   color_black, color_gray_lighter, color_primary,
 } from "../UI/variables.js";
 import ButtonStyle from "../Button/Button.jsx";
+import { Link } from "react-router-dom";
 
 const HeaderStyle = styled.header`
   display: flex;
@@ -15,7 +15,7 @@ const HeaderStyle = styled.header`
   padding: 4%;
   box-sizing: border-box;
   @media (min-width: 768px) {
-    padding: 2% 3%;
+    padding: 1% 3%;
     display: flex;
     justify-content: space-between;
   }
@@ -33,7 +33,7 @@ const ButtonHeader = styled(ButtonStyle)`
 const Header = () => <HeaderStyle>
   <Banner />
   <ButtonHeader>
-    <a href="url">Nuevo Video</a>
+    <Link to="/newVideo">Nuevo Video</Link>
   </ButtonHeader>
 </HeaderStyle>;
 

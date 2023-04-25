@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { color_gray_300 } from "../UI/variables";
+import { color_gray_300 } from "../../UI/variables";
 
 const OptionStyle = styled.option`
   background-color: transparent;

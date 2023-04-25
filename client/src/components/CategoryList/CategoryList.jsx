@@ -29,6 +29,7 @@ const CategoryTable = styled.div`
   @media (min-width: 768px) {
     display: flex;
     flex-direction: column;
+    width: 710px;
   }
 `;
 
@@ -93,7 +94,7 @@ const Content = ({ name, desc, id }) => (
     <CategoryDesc>{desc}</CategoryDesc>
     <CategoryCol>
       <ButtonEdit>
-        <Link to={`/edit/id`}>Editar</Link>
+        <Link to={`/edit/${id}`}>Editar</Link>
       </ButtonEdit>
     </CategoryCol>
     <CategoryCol>

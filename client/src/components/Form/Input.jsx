@@ -5,13 +5,28 @@ import {
   body_small,
   color_gray_300,
   body_medium,
+  color_error_dark,
+  color_primary,
 } from "../UI/variables.js";
+import { useState } from "react";
 
 export const InputWrapper = styled.div`
   position: relative;
   background-color: ${color_gray_750};
   padding: 4% 1%;
   border-radius: 4px;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: ${(props) => {
+    if (props.error) {
+      return color_error_dark;
+    }
+    if (props.focus) {
+      return color_primary;
+    }
+  }};
+  transition: all 0.2s ease-in-out;
+
   @media (min-width: 768px) {
     padding: 2% 1%;
   }
@@ -22,7 +37,6 @@ const InputStyle = styled.input`
   color: ${color_gray_300};
   padding-top: 2%;
   width: 100%;
-  height: ${(props) => props.type === "color" ? "7vh" : "3vh"};
 
   &&:not(:placeholder-shown) + label,
   &:focus + label {
@@ -54,17 +68,31 @@ export const Label = styled.label`
   }
 `;
 
-const Input = ({ type, labelText, value, placeholder, inputFunction }) => (
-  <InputWrapper>
-    <InputStyle
-      type={type}
-      id={labelText}
-      value={value}
-      placeholder={placeholder}
-      onChange={(e) => inputFunction(e.target.value)}
-    />
-    <Label htmlFor={labelText}>{labelText}</Label>
-  </InputWrapper>
-);
+const Input = ({
+  type,
+  labelText,
+  value,
+  placeholder,
+  error,
+  onChangeFunc,
+}) => {
+  const [focus, setFocus] = useState(false);
+
+  return (
+    <InputWrapper error={error} focus={focus}>
+      <InputStyle
+        type={type}
+        id={labelText}
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) => onChangeFunc(e.target.value)}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        required
+      />
+      <Label htmlFor={labelText}>{labelText}</Label>
+    </InputWrapper>
+  );
+};
 
 export default Input;

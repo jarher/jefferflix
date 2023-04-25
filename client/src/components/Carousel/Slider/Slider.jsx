@@ -3,73 +3,85 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
-import Videocard from "../Videocard/Videocard";
-import ButtonStyle from "../../Button/Button";
-import {
-  body_small,
-  body_smaller,
-  color_gray_lighter,
-  font_weight_300,
-  font_weight_600,
-} from "../../UI/variables";
+import Videocard from "../Videocard/Videocard.jsx";
+import Video from "../../Video/Video.jsx";
 
 const SliderContainer = styled.div`
   margin: 5%;
+  @media (min-width: 768px) {
+    margin: 1%;
+  }
 `;
 
-const CategoryButton = styled(ButtonStyle)`
-  background-color: ${props => props.catColor};
-  font-size: ${body_small};
-  font-weight: ${font_weight_600};
-  font-family: "Roboto-Light", sans-serif;
-  margin-left: 2%;
-  color: ${color_gray_lighter};
-  padding:3%;
-`;
-const SubtitleCategory = styled.h3`
-  color: ${color_gray_lighter};
-  font-size: ${body_smaller};
-  font-weight: ${font_weight_300};
-  margin: 3% 0 1% 2%;
-  font-family: "Roboto-Light",sans-serif;
-`;
+export class SimpleSlider extends Component {
+  render() {
+    var settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1
+    };
+    return (
+      <SliderContainer>
+        <Slider>
+          <Video />
+        </Slider>
+      </SliderContainer>
+    );
+  }
+}
 
-export default class SimpleSlider extends Component {
+export class MultipleItems extends Component {
   render() {
     const settings = {
       dots: true,
       infinite: true,
       speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
+      slidesToShow: 3,
+      slidesToScroll: 3,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            infinite: true,
+            dots: true,
+          },
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            initialSlide: 2,
+          },
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+          },
+        },
+      ],
     };
     return (
-      <SliderContainer>
-        <CategoryButton catColor={this.props.color}>Front End</CategoryButton>
-        <SubtitleCategory>Formación frontend de alura latam</SubtitleCategory>
+      <div>
         <Slider {...settings}>
-          <Videocard
-            imgUrl={"/img/VideoCard.png"}
-            alt={"videocard"}
-            border={this.props.color}
-          />
-          <Videocard
-            imgUrl={"/img/VideoCard2.png"}
-            alt={"videocard"}
-            border={this.props.color}
-          />
-          <Videocard
-            imgUrl={"/img/VideoCard.png"}
-            alt={"videocard"}
-            border={this.props.color}
-          />
-          <Videocard
-            imgUrl={"/img/VideoCard2.png"}
-            alt={"videocard"}
-            border={this.props.color}
-          />
+          {this.props.elements.map((element) => (
+            <Videocard
+              imgUrl={element.videoImg}
+              alt={element.desc}
+              border={this.props.color}
+              key={element.id}
+              setVideoId={this.props.setVideoId}
+              videoId={element.id}
+            />
+          ))}
         </Slider>
-      </SliderContainer>
+      </div>
     );
   }
 }

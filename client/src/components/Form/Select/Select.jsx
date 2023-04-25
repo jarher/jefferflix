@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { body_medium, color_gray_300, color_gray_750} from "../UI/variables.js";
+import { body_medium, color_gray_300, color_gray_750} from "../../UI/variables.js";
 import Option from "./Option.jsx";
+
 
 const SelectStyle = styled.select`
   width: 100%;
@@ -19,11 +20,11 @@ color: ${color_gray_300};
 }
 `;
 
-const Select = ({ Options, inputFunction, selected }) => 
+const Select = ({ labelText, options, onChangeFunc, selected }) => 
     <LabelSelect>
-    Escoja una Categoría
-      <SelectStyle onChange={(e) => inputFunction(e.target.value)} required value={selected}>
-        {Options.map((option) => (
+    {labelText}
+      <SelectStyle onChange={(e) => onChangeFunc(e.target.value)} required value={selected}>
+        {options.map((option) => (
           <Option value={option.value} key={option.id}>
             {option.value}
           </Option>

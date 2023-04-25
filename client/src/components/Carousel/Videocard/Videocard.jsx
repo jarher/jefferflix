@@ -3,8 +3,11 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { body_small, color_gray_300 } from "../../UI/variables.js";
 
 const Card = styled.div`
-  padding: 2%;
+  padding: 0 2% 2%;
   box-sizing: border-box;
+  @media (min-width: 768px) {
+    padding: 1% 2%;
+  }
 `;
 const CardInfo = styled.div`
   display: flex;
@@ -24,9 +27,10 @@ const CardImg = styled.img`
 const CreationDate = styled.span`
 `;
 
-const Videocard = ({ imgUrl, alt, border }) => {
+const Videocard = ({ imgUrl, alt, border, setVideoId, videoId}) => {
+  
   return (
-    <Card>
+    <Card onClick={() => setVideoId(videoId)}>
       <CardImg src={imgUrl} alt={alt} borderColor={border}/>
       <CardInfo>
         <div>

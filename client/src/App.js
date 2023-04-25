@@ -8,6 +8,8 @@ import Error404 from "./pages/Error404.jsx";
 import Edit from "./pages/Edit.jsx";
 
 function App() {
+  
+
   const Layout = () => {
     return (
       <>
@@ -23,7 +25,7 @@ function App() {
       path: "/",
       element: <Layout />,
       children: [
-        { path: "/", element: <Home /> },
+        { path: "/", element: <Home />},
         { path: "/newVideo", element: <NewVideo /> },
         { path: "/newCategory", element: <NewCategory /> },
         { path: "/edit/:id", element: <Edit /> },

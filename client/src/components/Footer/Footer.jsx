@@ -8,6 +8,8 @@ import {
 } from "../UI/variables.js";
 import ButtonStyle from "../Button/Button.jsx";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { FooterContext } from "../../Context/Context";
 
 const FooterStyle = styled.footer`
   display: flex;
@@ -48,17 +50,21 @@ const Author = styled.div`
 `;
 
 const Footer = () => {
-  
+  const {banner} = useContext(FooterContext);
+
   return (
     <FooterStyle>
-      <BannerContainer>
-        <Banner />
-        <Author>Sitio hecho por Jeffer Rojas</Author>
-      </BannerContainer>
-
-      <ButtonFooter>
-        <Link to="/newVideo">Nuevo Video</Link>
-      </ButtonFooter>
+      {banner && (
+        <BannerContainer>
+          <Banner />
+          <Author>Sitio hecho por Jeffer Rojas</Author>
+        </BannerContainer>
+      )}
+      {!banner && (
+        <ButtonFooter>
+          <Link to="/newVideo">Nuevo Video</Link>
+        </ButtonFooter>
+      )}
     </FooterStyle>
   );
 };

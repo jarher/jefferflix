@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Form from "../components/Form/Form.jsx";
-import Input from "../components/Input/Input.jsx";
 import { body_small } from "../components/UI/variables.js";
 import { Link } from "react-router-dom";
 import FormTitle from "../components/Form/FormTitle.jsx";
@@ -8,11 +7,19 @@ import FormButton from "../components/Form/FormButton.jsx";
 import FormButtonsContainer from "../components/Form/FormButtonsContainer.jsx";
 import ButtonsSubmit from "../components/Form/ButtonsSubmit.jsx";
 import { useState } from "react";
-import Textarea from "../components/Textarea/Textarea.jsx";
 import FormWrapper from "../components/Form/FormWrapper.jsx";
-import Error from "../components/Form/ErrorMessage.jsx";
-import Select from "../components/Select/Select.jsx";
 import { Layer } from "../components/Layer/Layer.jsx";
+import {
+  validateSelect,
+  validateImgUrl,
+  validateTitle,
+  validateVideoLink,
+  validateTextarea,
+  validateUser,
+} from "../ValidateForm/Validate.js";
+import { useContext } from "react";
+import {FooterContext} from "../Context/Context.js";
+import { useEffect } from "react";
 
 const NewVideoContainer = styled(Layer)`
   padding: 5%;
@@ -36,20 +43,106 @@ const options = [
 ];
 
 const NewVideo = () => {
-  const [title, setTitle] = useState("");
-  const [videoLink, setVideoLink] = useState("");
-  const [backgroundVideo, setBackgroundVideo] = useState("");
-  const [selected, setSelected] = useState("Front End");
-  const [description, setDescription] = useState("");
-  const [user, setUser] = useState("");
+  const [title, setTitle] = useState({ value: "", valid: null });
+  const [videoLink, setVideoLink] = useState({ value: "", valid: null });
+  const [backgroundVideo, setBackgroundVideo] = useState({
+    value: "",
+    valid: null,
+  });
+  const [selected, setSelected] = useState({ value: "Back End", valid: null });
+  const [description, setDescription] = useState({ value: "", valid: null });
+  const [user, setUser] = useState({ value: "", valid: null });
 
+  const formElements = [
+    {
+      formElement: "input",
+      type: "text",
+      state: title,
+      labelText: "Título",
+      placeholder: "Título",
+      onChangeFunc(input) {
+        setTitle({ value: input, valid: validateTitle(input) });
+      },
+      errorMessage: "Ingrese el título del vídeo",
+      options: null,
+    },
+    {
+      formElement: "input",
+      type: "text",
+      state: videoLink,
+      labelText: "Link del vídeo",
+      placeholder: "Link del vídeo",
+      onChangeFunc(input) {
+        setVideoLink({ value: input, valid: validateVideoLink(input) });
+      },
+      errorMessage: "Url Inválida",
+      options: null,
+    },
+    {
+      formElement: "input",
+      type: "text",
+      state: backgroundVideo,
+      labelText: "Link de la imagen del vídeo",
+      placeholder: "Link de la imagen del vídeo",
+      onChangeFunc(input) {
+        setBackgroundVideo({ value: input, valid: validateImgUrl(input) });
+      },
+      errorMessage: "Url Inválida",
+      options: null,
+    },
+    {
+      formElement: "select",
+      type: null,
+      state: selected,
+      labelText: "Seleccione una Categoría",
+      placeholder: null,
+      onChangeFunc(value) {
+        setSelected({ value: value, valid: validateSelect(value) });
+      },
+      errorMessage: "Seleccione una categoría",
+      options: options,
+    },
+    {
+      formElement: "textarea",
+      type: null,
+      state: description,
+      labelText: null,
+      placeholder: "Descripción",
+      onChangeFunc(value) {
+        setDescription({ value: value, valid: validateTextarea(value) });
+      },
+      errorMessage: "Ingrese una descripción del vídeo",
+      options: null,
+    },
+    {
+      formElement: "input",
+      type: "text",
+      state: user,
+      labelText: "Usuario",
+      placeholder: "Usuario",
+      onChangeFunc(input) {
+        setUser({ value: input, valid: validateUser(input) });
+      },
+      errorMessage: "No se acepta contenido vacío, ni caracteres diferentes a los alfanuméricos, barra baja(_) y guión (-)",
+      options: null,
+    },
+  ];
+
+  const {bannerVisibility} = useContext(FooterContext);
+
+  useEffect(() => {
+      bannerVisibility(true);
+  }, []);
+  
+
+  
   const cleanForm = () => {
-    setTitle("");
-    setVideoLink("");
-    setBackgroundVideo("");
-    setSelected("Front End");
-    setDescription("");
-    setUser("");
+    setTitle({ value: "", valid: null });
+    setVideoLink({ value: "", valid: null });
+    setBackgroundVideo({ value: "", valid: null });
+    setSelected({ value: "Back End", valid: null });
+    setDescription({ value: "", valid: null });
+    setUser({ value: "", valid: null });
   };
 
   const formSubmit = (e) => {
@@ -60,62 +153,32 @@ const NewVideo = () => {
     <NewVideoContainer>
       <Form onSubmit={formSubmit}>
         <FormTitle>Nuevo Video</FormTitle>
-        <FormWrapper>
-          <Input
-            type={"text"}
-            labelText={"Título"}
-            value={title}
-            placeholder={"Título"}
-            inputFunction={setTitle}
-          />
-          <Error message={"message"} />
-        </FormWrapper>
-        <FormWrapper>
-          <Input
-            type={"text"}
-            labelText={"Link del vídeo"}
-            value={videoLink}
-            placeholder={"Link del vídeo"}
-            inputFunction={setVideoLink}
-          />
-          <Error message={"message"} />
-        </FormWrapper>
-        <FormWrapper>
-          <Input
-            type={"text"}
-            labelText={"Link de la imagen del vídeo"}
-            value={backgroundVideo}
-            placeholder={"Link de la imagen del vídeo"}
-            inputFunction={setBackgroundVideo}
-          />
-          <Error message={"message"} />
-        </FormWrapper>
-        <FormWrapper>
-          <Select
-            Options={options}
-            inputFunction={setSelected}
-            selected={selected}
-          />
-          <Error message={"message"} />
-        </FormWrapper>
-        <FormWrapper>
-          <Textarea
-            value={description}
-            placeholder={"Descripción"}
-            inputFunction={setDescription}
-          />
-          <Error message={"message"} />
-        </FormWrapper>
-        <FormWrapper>
-          <Input
-            type={"text"}
-            labelText={"Usuario"}
-            value={user}
-            placeholder={"Usuario"}
-            inputFunction={setUser}
-          />
-          <Error message={"message"} />
-        </FormWrapper>
+        {formElements.map((element, i) => {
+          const {
+            formElement,
+            state,
+            type,
+            labelText,
+            placeholder,
+            onChangeFunc,
+            options
+          } = element;
+         
+          return (
+            <FormWrapper
+              element={formElement}
+              type={type}
+              labelText={labelText}
+              value={state.value}
+              placeholder={placeholder}
+              error={state.valid === false}
+              errorMessage={state.valid === false ? element.errorMessage : ""}
+              onChangeFunc={onChangeFunc}
+              options={options}
+              key={i}
+            />
+          );
+        })}
         <FormButtonsContainer>
           <ButtonsSubmit>
             <FormButton>Guardar</FormButton>

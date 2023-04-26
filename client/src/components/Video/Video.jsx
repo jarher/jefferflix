@@ -49,7 +49,13 @@ const VideoDescription = styled.div`
 `;
 
 const Video = (props) => {
-  const { desc, videoLink, videoImg } = props.video;
+  // const { desc, videoLink, videoImg } = props.video;
+  
+  // function getVideoUrl(videoLink){
+  //   if(videoLink.includes("youtube")){
+  //     const urlString = videoLink.split("/");
+  //   }
+  // }
   return (
     <>
       <VideoContainer>
@@ -59,13 +65,23 @@ const Video = (props) => {
             <BsFillPlayFill />
           </ButtonPlayer>
         </VideoLayer> */}
-        <VideoPlayer
-          src="https://www.youtube.com/embed/0ezyWcOGik8"
+        {/* <VideoPlayer
+          src=""
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
-        ></VideoPlayer>
+        ></VideoPlayer> */}
+      
+        {/* <iframe
+          src="https://player.vimeo.com/video/801818003?h=62e9403baf"
+          width="640"
+          height="360"
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+        ></iframe> */}
+      
         {/* registrado el link, verificar si es de youtube, elegit sólo el id del
         video luego concatene https://www.youtube.com/embed/ con el id. */}
       </VideoContainer>

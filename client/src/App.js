@@ -6,6 +6,7 @@ import NewVideo from "./pages/NewVideo.jsx";
 import NewCategory from "./pages/NewCategory.jsx";
 import Error404 from "./pages/Error404.jsx";
 import Edit from "./pages/Edit.jsx";
+import GlobalStyle from "./global.js";
 
 function App() {
   
@@ -13,6 +14,7 @@ function App() {
   const Layout = () => {
     return (
       <>
+        <GlobalStyle />
         <Header />
         <Outlet />
         <Footer />

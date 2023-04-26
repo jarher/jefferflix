@@ -1,35 +1,101 @@
 import styled from "styled-components";
-import { body_medium, color_gray_300, color_gray_750} from "../../UI/variables.js";
+import {
+  body_medium,
+  body_smaller,
+  color_gray_300,
+  color_gray_750,
+} from "../../UI/variables.js";
 import Option from "./Option.jsx";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-
-const SelectStyle = styled.select`
+const SelectWrapper = styled.div`
   width: 100%;
-  background-color: transparent;
-  color: ${color_gray_300};
   position: relative;
   background-color: ${color_gray_750};
-  padding: 3% 0;
-  margin-top: 2%;
+  position: relative;
+  border-radius: 4px;
 `;
 
-const LabelSelect = styled.label`
-color: ${color_gray_300};
-@media (min-width: 768px) {
-  font-size: ${body_medium};
-}
-`;
+const theme = createTheme({
+  components: {
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          border: "none",
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: color_gray_300,
+          paddingLeft: "2%",
+          marginTop: "5px",
+          "&.Mui-focused": {
+            color: color_gray_300,
+          },
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+          color: color_gray_300,
+          paddingLeft: "2%",
+          marginBottom:"2%",
+          border:"none",
+          "&.MuiSelect-outlined":{
+            border:"none"
+          }
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          backgroundColor: color_gray_750,
+          margin: 0,
+          "&.Mui-selected": {
+            backgroundColor: color_gray_750,
+          },
+        },
+      },
+    },
+  },
+});
 
-const Select = ({ labelText, options, onChangeFunc, selected }) => 
-    <LabelSelect>
-    {labelText}
-      <SelectStyle onChange={(e) => onChangeFunc(e.target.value)} required value={selected}>
-        {options.map((option) => (
-          <Option value={option.value} key={option.id}>
-            {option.value}
-          </Option>
-        ))}
-      </SelectStyle>
-    </LabelSelect>;
+const SelectComp = ({ labelText, options, onChangeFunc, selected }) => {
+  return (
+    <SelectWrapper>
+      <ThemeProvider theme={theme}>
+        <FormControl fullWidth variant="standard">
+          <InputLabel
+            id="category"
+          >
+            {labelText}
+          </InputLabel>
+          <Select
+            labelId="category"
+            id="category"
+            value={selected}
+            label="category"
+            onChange={(e) => onChangeFunc(e.target.value)}
+          >
+            {options.map((option) => (
+              <MenuItem value={option.value} key={option.id}>
+                {option.value}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </ThemeProvider>
+    </SelectWrapper>
+  );
+};
 
-export default Select;
+export default SelectComp;

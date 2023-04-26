@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Input from "./Input.jsx";
 import Error from "./ErrorMessage.jsx";
-import Select from "./Select/Select.jsx";
 import Textarea from "./Textarea/Textarea.jsx";
+import SelectComp from "./Select/Select.jsx";
 
 const FormWrapperStyle = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const FormWrapper = ({
       />
     )}
     {element === "select" && (
-      <Select
+      <SelectComp
         labelText={labelText}
         onChangeFunc={onChangeFunc}
         selected={value}

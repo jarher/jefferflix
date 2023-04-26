@@ -49,7 +49,7 @@ const NewVideo = () => {
     value: "",
     valid: null,
   });
-  const [selected, setSelected] = useState({ value: "Back End", valid: null });
+  const [selected, setSelected] = useState({ value: "", valid: null });
   const [description, setDescription] = useState({ value: "", valid: null });
   const [user, setUser] = useState({ value: "", valid: null });
 
@@ -123,7 +123,7 @@ const NewVideo = () => {
       onChangeFunc(input) {
         setUser({ value: input, valid: validateUser(input) });
       },
-      errorMessage: "No se acepta contenido vacío, ni caracteres diferentes a los alfanuméricos, barra baja(_) y guión (-)",
+      errorMessage: "No se acepta contenido vacío, ni caracteres especiales excepto los alfanuméricos, barra baja(_) y guión (-)",
       options: null,
     },
   ];
@@ -140,7 +140,7 @@ const NewVideo = () => {
     setTitle({ value: "", valid: null });
     setVideoLink({ value: "", valid: null });
     setBackgroundVideo({ value: "", valid: null });
-    setSelected({ value: "Back End", valid: null });
+    setSelected({ value: "", valid: null });
     setDescription({ value: "", valid: null });
     setUser({ value: "", valid: null });
   };

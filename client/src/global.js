@@ -1,3 +1,6 @@
+import { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
 @font-face {
   font-family: Roboto-Light;
   src: url("./fonts/Roboto-Light.ttf");
@@ -64,3 +67,7 @@ input, select, textarea{
 .slick-active button{
   color: white!important;
 }
+
+`;
+
+export default GlobalStyle;

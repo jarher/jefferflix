@@ -38,7 +38,7 @@ const InputStyle = styled.input`
   padding-top: 2%;
   width: 100%;
 
-  &&:not(:placeholder-shown) + label,
+  &:not(:placeholder-shown) + label,
   &:focus + label {
     font-size: ${body_smaller};
     top: 4px;

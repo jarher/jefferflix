@@ -14,6 +14,11 @@ const HeaderStyle = styled.header`
   border-bottom:1px solid ${color_primary};
   padding: 4%;
   box-sizing: border-box;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  right: 0;
+  height: 11vh;
   @media (min-width: 768px) {
     padding: 1% 3%;
     display: flex;

@@ -4,7 +4,7 @@ const Carousel = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
-    margin:0 2%
+    margin:0 2% 2%;
 `;
 
 export default Carousel;

@@ -10,15 +10,21 @@ import {
   font_weight_300,
   font_weight_600,
 } from "../components/UI/variables.js";
-import {
-  MultipleItems
-} from "../components/Carousel/Slider/Slider.jsx";
+import { MultipleItems } from "../components/Carousel/Slider/Slider.jsx";
 import Video from "../components/Video/Video.jsx";
 import { useContext } from "react";
 import { FooterContext } from "../Context/Context.js";
 import { useEffect } from "react";
 
-export const HomeStyled = styled(Layer)``;
+export const HomeStyled = styled(Layer)`
+`;
+
+const CarouselWrapper = styled.div`
+  margin-top: 220px;
+  min-height: 60vh;
+  padding-top: 2%;
+  box-sizing: border-box;
+`;
 
 const CategoryButton = styled(ButtonStyle)`
   background-color: ${(props) => props.catColor};
@@ -46,13 +52,12 @@ const SubtitleCategory = styled.h3`
 `;
 
 const Home = () => {
-
-  const {bannerVisibility} = useContext(FooterContext);
+  const { bannerVisibility } = useContext(FooterContext);
 
   useEffect(() => {
     bannerVisibility(false);
   }, []);
-  
+
   const [videoList, setVideoList] = useState([
     {
       id: 1,
@@ -108,22 +113,24 @@ const Home = () => {
 
   return (
     <HomeStyled>
-      <Video video={videoList.filter(video => video.id === videoId)[0]} />
-      {categoriesList.map((category) => (
-        <Carousel key={category.id}>
-          <CategoryButton catColor={category.color}>
-            {category.title}
-          </CategoryButton>
-          <SubtitleCategory>{category.desc}</SubtitleCategory>
-          <MultipleItems
-            elements={videoList.filter(
-              (video) => video.category === category.title
-            )}
-            color={category.color}
-            setVideoId={setVideoId}
-          />
-        </Carousel>
-      ))}
+      <Video video={videoList.filter((video) => video.id === videoId)[0]} />
+      <CarouselWrapper>
+        {categoriesList.map((category) => (
+          <Carousel key={category.id}>
+            <CategoryButton catColor={category.color}>
+              {category.title}
+            </CategoryButton>
+            <SubtitleCategory>{category.desc}</SubtitleCategory>
+            <MultipleItems
+              elements={videoList.filter(
+                (video) => video.category === category.title
+              )}
+              color={category.color}
+              setVideoId={setVideoId}
+            />
+          </Carousel>
+        ))}
+      </CarouselWrapper>
     </HomeStyled>
   );
 };

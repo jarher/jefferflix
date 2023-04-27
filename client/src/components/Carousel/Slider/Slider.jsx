@@ -2,35 +2,7 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styled from "styled-components";
 import Videocard from "../Videocard/Videocard.jsx";
-import Video from "../../Video/Video.jsx";
-
-const SliderContainer = styled.div`
-  margin: 5%;
-  @media (min-width: 768px) {
-    margin: 1%;
-  }
-`;
-
-export class SimpleSlider extends Component {
-  render() {
-    var settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1
-    };
-    return (
-      <SliderContainer>
-        <Slider>
-          <Video />
-        </Slider>
-      </SliderContainer>
-    );
-  }
-}
 
 export class MultipleItems extends Component {
   render() {

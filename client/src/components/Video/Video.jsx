@@ -6,6 +6,14 @@ import { useState } from "react";
 import { useEffect } from "react";
 import getVideoUrl from "./getVideoUrl.js";
 
+const VideoWrapper = styled.div`
+  position: fixed;
+  z-index:999;
+  left: 0;
+  right: 0;
+  top:11vh;
+`;
+
 const VideoContainer = styled.div`
   position: relative;
   @media (min-width: 768px) {
@@ -20,7 +28,11 @@ const VideoLayer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,23 +82,21 @@ const Video = (props) => {
   const [layer, setLayer] = useState(true);
   const [occultLayer, setOccultLayer] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     setLayer(true);
     setOccultLayer(false);
-  },[videoLink]);
+  }, [videoLink]);
 
-  useEffect(()=> {
-    setTimeout(()=>setLayer(false),200);
-  },[occultLayer]);
+  useEffect(() => {
+    setTimeout(() => setLayer(false), 200);
+  }, [occultLayer]);
 
   const handleLayerState = () => {
     setOccultLayer(true);
   };
 
-  
-
   return (
-    <>
+    <VideoWrapper>
       <VideoContainer>
         {layer && (
           <LayersWrapper occultLayer={occultLayer}>
@@ -108,7 +118,7 @@ const Video = (props) => {
           allowFullScreen
         ></VideoPlayer>
       </VideoContainer>
-    </>
+    </VideoWrapper>
   );
 };
 

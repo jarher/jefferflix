@@ -2,6 +2,9 @@ import styled from "styled-components";
 import { BsFillPlayFill } from "react-icons/bs";
 import { body_big, body_medium, color_gray_lighter } from "../UI/variables.js";
 import ButtonStyle from "../Button/Button.jsx";
+import { useState } from "react";
+import { useEffect } from "react";
+import getVideoUrl from "./getVideoUrl.js";
 
 const VideoContainer = styled.div`
   position: relative;
@@ -24,8 +27,8 @@ const VideoLayer = styled.div`
 `;
 
 const VideoPlayer = styled.iframe`
+  width: 100%;
   @media (min-width: 768px) {
-    width: 100%;
   }
 `;
 
@@ -48,42 +51,62 @@ const VideoDescription = styled.div`
   }
 `;
 
+const BackgroundImg = styled.div`
+  background: url(${(props) => props.videoImg}) no-repeat top center / cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`;
+
+const LayersWrapper = styled.div`
+  opacity: ${(props) => (props.occultLayer ? 0 : 1)};
+  transition: all 0.2s ease-in-out;
+`;
+
 const Video = (props) => {
-  // const { desc, videoLink, videoImg } = props.video;
+  const { desc, videoLink, videoImg } = props.video;
+  const [layer, setLayer] = useState(true);
+  const [occultLayer, setOccultLayer] = useState(false);
+
+  useEffect(()=>{
+    setLayer(true);
+    setOccultLayer(false);
+  },[videoLink]);
+
+  useEffect(()=> {
+    setTimeout(()=>setLayer(false),200);
+  },[occultLayer]);
+
+  const handleLayerState = () => {
+    setOccultLayer(true);
+  };
+
   
-  // function getVideoUrl(videoLink){
-  //   if(videoLink.includes("youtube")){
-  //     const urlString = videoLink.split("/");
-  //   }
-  // }
+
   return (
     <>
       <VideoContainer>
-        {/* <VideoLayer>
-          <VideoDescription>{desc}</VideoDescription>
-          <ButtonPlayer>
-            <BsFillPlayFill />
-          </ButtonPlayer>
-        </VideoLayer> */}
-        {/* <VideoPlayer
-          src=""
+        {layer && (
+          <LayersWrapper occultLayer={occultLayer}>
+            <BackgroundImg videoImg={videoImg} />
+            <VideoLayer>
+              <VideoDescription>{desc}</VideoDescription>
+              <ButtonPlayer onClick={handleLayerState}>
+                <BsFillPlayFill />
+              </ButtonPlayer>
+            </VideoLayer>
+          </LayersWrapper>
+        )}
+
+        <VideoPlayer
+          src={getVideoUrl(videoLink)}
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
-        ></VideoPlayer> */}
-      
-        {/* <iframe
-          src="https://player.vimeo.com/video/801818003?h=62e9403baf"
-          width="640"
-          height="360"
-          frameborder="0"
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowfullscreen
-        ></iframe> */}
-      
-        {/* registrado el link, verificar si es de youtube, elegit sólo el id del
-        video luego concatene https://www.youtube.com/embed/ con el id. */}
+        ></VideoPlayer>
       </VideoContainer>
     </>
   );

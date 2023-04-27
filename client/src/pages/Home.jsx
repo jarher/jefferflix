@@ -53,52 +53,53 @@ const Home = () => {
     bannerVisibility(false);
   }, []);
   
-  const [videoList, setVideoList] = useState([ 
+  const [videoList, setVideoList] = useState([
     {
       id: 1,
-      title: "Enoc, el primer astronauta de la historia",
-      videoLink: "https://youtu.be/embed/ReAowiY6YLc",
+      title:
+        "IMPERIOS (Historia de China-5) El Último Imperio  -  Documentales",
+      videoLink: "https://www.youtube.com/watch?v=6i8TRX3A3ow",
       videoImg:
-        "https://i.ytimg.com/vi/U34voghnU9c/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD9CuY5_QnwGpLmGMen-OL0GRNGIQ",
-      category: "Misterios",
-      desc: "Tema relacionado con el misterio",
+        "https://i.ytimg.com/vi/6i8TRX3A3ow/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBfgCTo1zbEQUrqQ2yIoxuGA_6whA",
+      category: "Historia",
+      desc: "Historia de china",
       user: "Jeffer Rojas",
     },
-    // {
-    //   id: 2,
-    //   title: "Esta superpotencia europea tiene problemas para alimentarse",
-    //   videoLink: "https://www.youtube.com/7FGfrPQzRm8",
-    //   videoImg:
-    //     "https://i.ytimg.com/vi/7FGfrPQzRm8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCGEKsR-6vjsjs3NH2j3A245TyLIQ",
-    //   category: "Geopolítica",
-    //   desc: "Tema relacionado con la geopolítica del mundo",
-    //   user: "Jeffer Rojas",
-    // },
-    // {
-    //   id: 3,
-    //   title: "Encuentran la isla oculta del diablo",
-    //   videoLink: "https://www.youtube.com/s4OT2TPpbFI",
-    //   videoImg:
-    //     "https://i.ytimg.com/vi/s4OT2TPpbFI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCXgpB950FHL7MN1QssapVQPkdnLA",
-    //   category: "Misterios",
-    //   desc: "Tema relacionado con el misterio",
-    //   user: "Jeffer Rojas",
-    // },
+    {
+      id: 2,
+      title: "Encuentran la isla oculta del diablo",
+      videoLink: "https://www.youtube.com/s4OT2TPpbFI",
+      videoImg:
+        "https://i.ytimg.com/vi/s4OT2TPpbFI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCXgpB950FHL7MN1QssapVQPkdnLA",
+      category: "Misterios",
+      desc: "Isla misteriosa",
+      user: "Jeffer Rojas",
+    },
+    {
+      id: 3,
+      title: "ASIA (India)  -  Documentales",
+      videoLink: "https://www.youtube.com/watch?v=sv-6ukY2O7Q",
+      videoImg:
+        "https://i.ytimg.com/vi/sv-6ukY2O7Q/hqdefault.jpg?sqp=-oaymwEjCOADEI4CSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLC6lM8-0dgUaZ_1TqI7L3OUODDZtA",
+      category: "Historia",
+      desc: "Historia de la India",
+      user: "Jeffer Rojas",
+    },
   ]);
 
   const [categoriesList, setCategoriesList] = useState([
     {
       id: 100,
-      title: "Misterios",
+      title: "Historia",
       color: "red",
-      desc: "Misterios del pasado  presente",
+      desc: "Sucesos de la humanidad",
       user: "Jeffer Rojas",
     },
     {
       id: 101,
-      title: "Geopolítica",
+      title: "Misterios",
       color: "green",
-      desc: "Acontecimientos internacionales",
+      desc: "Acontecimientos extraños y sorprendentes",
       user: "Jeffer Rojas",
     },
   ]);

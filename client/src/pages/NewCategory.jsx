@@ -19,11 +19,25 @@ export const NewCategoryContainer = styled(Layer)`
 `;
 
 const NewCategory = () => {
-  const [catTitle, setCatTitle] = useState("");
+  const [catTitle, setCatTitle] = useState({value:"", valid:null});
   const [catColor, setCatColor] = useState("#FFBA05");
   const [catDescription, setcatDescription] = useState("");
   const [catUser, setCatUser] = useState("");
 
+  const formElements = [
+    {
+      formElement: "input",
+      type: "text",
+      state: catTitle,
+      labelText: "Título",
+      placeholder: "Título",
+      onChangeFunc(input) {
+        setCatTitle({ value: input, valid: validateTitle(input) });
+      },
+      errorMessage: "Ingrese el título del vídeo",
+      options: null,
+    }
+  ];
   const cleanForm = () => {
     setCatTitle("");
     setCatColor("#FFBA05");

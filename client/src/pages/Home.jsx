@@ -4,7 +4,6 @@ import { Layer } from "../components/Layer/Layer.jsx";
 import React, { useState } from "react";
 import ButtonStyle from "../components/Button/Button.jsx";
 import {
-  body_small,
   body_smaller,
   color_gray_lighter,
   font_weight_300,
@@ -18,24 +17,25 @@ import { useEffect } from "react";
 
 export const HomeStyled = styled(Layer)`
 `;
-
 const CarouselWrapper = styled.div`
-  margin-top: 220px;
   min-height: 60vh;
   padding-top: 2%;
   box-sizing: border-box;
+  margin-top:12vh;
+  @media (min-width: 425px) {
+    padding-top: 1%;
+  }
 `;
-
 const CategoryButton = styled(ButtonStyle)`
   background-color: ${(props) => props.catColor};
-  font-size: ${body_small};
+  font-size: ${body_smaller};
   font-weight: ${font_weight_600};
   font-family: "Roboto-Light", sans-serif;
   color: ${color_gray_lighter};
   padding: 2%;
   margin-left: 2%;
   align-self: flex-start;
-  @media (min-width: 768px) {
+  @media (min-width: 425px) {
     margin-top: 1%;
     padding: 1%;
   }
@@ -67,7 +67,7 @@ const Home = () => {
       videoImg:
         "https://i.ytimg.com/vi/6i8TRX3A3ow/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBfgCTo1zbEQUrqQ2yIoxuGA_6whA",
       category: "Historia",
-      desc: "Historia de china",
+      desc: "Historia de china, con sus sabores y sinsabores. Extraño, exótico y sabroso",
       user: "Jeffer Rojas",
     },
     {
@@ -88,6 +88,27 @@ const Home = () => {
         "https://i.ytimg.com/vi/sv-6ukY2O7Q/hqdefault.jpg?sqp=-oaymwEjCOADEI4CSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLC6lM8-0dgUaZ_1TqI7L3OUODDZtA",
       category: "Historia",
       desc: "Historia de la India",
+      user: "Jeffer Rojas",
+    },
+    {
+      id: 4,
+      title: "ASIA (India)  -  Documentales",
+      videoLink: "https://www.youtube.com/watch?v=sv-6ukY2O7Q",
+      videoImg:
+        "https://i.ytimg.com/vi/sv-6ukY2O7Q/hqdefault.jpg?sqp=-oaymwEjCOADEI4CSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLC6lM8-0dgUaZ_1TqI7L3OUODDZtA",
+      category: "Historia",
+      desc: "Historia de la India",
+      user: "Jeffer Rojas",
+    },
+    {
+      id: 5,
+      title:
+        "IMPERIOS (Historia de China-5) El Último Imperio  -  Documentales",
+      videoLink: "https://www.youtube.com/watch?v=6i8TRX3A3ow",
+      videoImg:
+        "https://i.ytimg.com/vi/6i8TRX3A3ow/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBfgCTo1zbEQUrqQ2yIoxuGA_6whA",
+      category: "Historia",
+      desc: "Historia de china",
       user: "Jeffer Rojas",
     },
   ]);

@@ -37,3 +37,7 @@ export const validateUser = (value) => {
     return !regex.test(value);
   }
 };
+
+export const validateColor = (value) => {
+  
+}

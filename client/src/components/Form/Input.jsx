@@ -37,7 +37,7 @@ const InputStyle = styled.input`
   color: ${color_gray_300};
   padding-top: 2%;
   width: 100%;
-
+  height:${(props) => (props.type === "color" ? "6vh" : "auto")};
   &:not(:placeholder-shown) + label,
   &:focus + label {
     font-size: ${body_smaller};
@@ -52,6 +52,10 @@ const InputStyle = styled.input`
     visibility: hidden;
     color: #00000000;
   }
+  @media (min-width:768px){
+    height:${(props) => (props.type === "color" ? "8vh" : "auto")}
+  }
+  
 `;
 
 export const Label = styled.label`
@@ -60,11 +64,11 @@ export const Label = styled.label`
   color: ${color_gray_300};
   font-family: "Roboto-Light", sans-serif;
   left: 5px;
-  top: 16px;
+  top: ${(props) => (props.htmlFor === "Color" ? "5px" : "16px")};
   transition: all 0.2s ease-in-out;
   @media (min-width: 768px) {
     font-size: ${body_medium};
-    top: 20px;
+    top: ${(props) => (props.htmlFor === "Color" ? "5px" : "20px")};
   }
 `;
 

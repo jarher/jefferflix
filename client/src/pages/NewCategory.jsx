@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import FormTitle from "../components/Form/FormTitle.jsx";
-// import Input from "../components/Input/Input.jsx";
 import FormButtonsContainer from "../components/Form/FormButtonsContainer.jsx";
 import ButtonsSubmit from "../components/Form/ButtonsSubmit.jsx";
 import FormButton from "../components/Form/FormButton.jsx";
 import Form from "../components/Form/Form.jsx";
 import FormWrapper from "../components/Form/FormWrapper.jsx";
-import Error from "../components/Form/ErrorMessage.jsx";
-import { useState } from "react";
 import CategoryList from "../components/CategoryList/CategoryList.jsx";
 import { Layer } from "../components/Layer/Layer.jsx";
+import { validateColor, validateTextarea, validateTitle, validateUser } from "../ValidateForm/Validate.js";
+import { useState, useContext, useEffect } from "react";
+import { FooterContext } from "../Context/Context.js";
 
 export const NewCategoryContainer = styled(Layer)`
   padding: 5%;
@@ -20,9 +20,9 @@ export const NewCategoryContainer = styled(Layer)`
 
 const NewCategory = () => {
   const [catTitle, setCatTitle] = useState({value:"", valid:null});
-  const [catColor, setCatColor] = useState("#FFBA05");
-  const [catDescription, setcatDescription] = useState("");
-  const [catUser, setCatUser] = useState("");
+  const [catColor, setCatColor] = useState({value:"#FFBA05", valid:null});
+  const [catDescription, setcatDescription] = useState({value:"", valid:null});
+  const [catUser, setCatUser] = useState({ value: "", valid: null });
 
   const formElements = [
     {
@@ -36,8 +36,51 @@ const NewCategory = () => {
       },
       errorMessage: "Ingrese el título del vídeo",
       options: null,
-    }
+    },
+    {
+      formElement: "input",
+      type: "color",
+      state: catColor,
+      labelText: "Color",
+      placeholder: null,
+      onChangeFunc(input) {
+        setCatColor({ value: input, valid: validateColor(input) });
+      },
+      errorMessage: "Elija el color",
+      options: null,
+    },
+    {
+      formElement: "textarea",
+      type: null,
+      state: catDescription,
+      labelText: "Descripción",
+      placeholder: "Descripción",
+      onChangeFunc(input) {
+        setcatDescription({ value: input, valid: validateTextarea(input) });
+      },
+      errorMessage: "Ingrese una descripción de la categoría",
+      options: null,
+    },
+    {
+      formElement: "input",
+      type: "text",
+      state: catUser,
+      labelText: "Usuario",
+      placeholder: "Usuario",
+      onChangeFunc(input) {
+        setCatUser({ value: input, valid: validateUser(input) });
+      },
+      errorMessage: "Ingrese el nombre de usuario",
+      options: null,
+    },
   ];
+
+  const {bannerVisibility} = useContext(FooterContext);
+
+  useEffect(() => {
+      bannerVisibility(true);
+  }, []);
+
   const cleanForm = () => {
     setCatTitle("");
     setCatColor("#FFBA05");
@@ -48,49 +91,36 @@ const NewCategory = () => {
   const formSubmit = (e) => {
     e.preventDefault();
   };
-
   return (
     <NewCategoryContainer>
-      {/* <Form onSubmit={formSubmit}>
+      <Form onSubmit={formSubmit}>
         <FormTitle>Nueva Categoría</FormTitle>
-        <FormWrapper>
-          <Input
-            type={"text"}
-            labelText={"Título"}
-            value={catTitle}
-            placeholder={"Título"}
-            inputFunction={setCatTitle}
-          />
-          <Error message={"message"} />
-        </FormWrapper>
-        <FormWrapper>
-          <Input
-            type={"color"}
-            labelText={"Color"}
-            value={catColor}
-            placeholder={""}
-            inputFunction={setCatColor}
-          />
-          <Error message={"message"} />
-        </FormWrapper>
-        <FormWrapper>
-          <Textarea
-            value={catDescription}
-            placeholder={"Descripción"}
-            inputFunction={setcatDescription}
-          />
-          <Error message={"message"} />
-        </FormWrapper>
-        <FormWrapper>
-          <Input
-            type={"text"}
-            labelText={"Usuario"}
-            value={catUser}
-            placeholder={"Usuario"}
-            inputFunction={setCatUser}
-          />
-          <Error message={"message"} />
-        </FormWrapper>
+        {formElements.map((element, i) => {
+          const {
+            formElement,
+            state,
+            type,
+            labelText,
+            placeholder,
+            onChangeFunc,
+            options,
+          } = element;
+
+          return (
+            <FormWrapper
+              element={formElement}
+              type={type}
+              labelText={labelText}
+              value={state.value}
+              placeholder={placeholder}
+              error={state.valid === false}
+              errorMessage={state.valid === false ? element.errorMessage : ""}
+              onChangeFunc={onChangeFunc}
+              options={options}
+              key={i}
+            />
+          );
+        })}
         <FormButtonsContainer>
           <ButtonsSubmit>
             <FormButton>Guardar</FormButton>
@@ -99,7 +129,7 @@ const NewCategory = () => {
             </FormButton>
           </ButtonsSubmit>
         </FormButtonsContainer>
-      </Form> */}
+      </Form>
       <CategoryList />
     </NewCategoryContainer>
   );

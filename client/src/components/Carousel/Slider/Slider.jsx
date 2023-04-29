@@ -48,9 +48,8 @@ export class MultipleItems extends Component {
               imgUrl={element.videoImg}
               alt={element.desc}
               border={this.props.color}
-              key={element.id}
-              setVideoId={this.props.setVideoId}
               videoId={element.id}
+              key={element.id}
             />
           ))}
         </Slider>

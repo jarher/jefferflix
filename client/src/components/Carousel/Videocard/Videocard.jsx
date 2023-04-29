@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { body_smaller, color_gray_300 } from "../../UI/variables.js";
+import { useContext } from "react";
+import { DataContext } from "../../../Context/DataContext.js";
 
 const Card = styled.div`
   padding: 0 2% 2%;
@@ -24,7 +26,8 @@ const CardImg = styled.img`
 const CreationDate = styled.span`
 `;
 
-const Videocard = ({ imgUrl, alt, border, setVideoId, videoId}) => {
+const Videocard = ({ imgUrl, alt, border, videoId}) => {
+  const {set_videoID} = useContext(DataContext);
   const deleteVideo = () => {
     console.log("pinch")
   }
@@ -34,7 +37,7 @@ const Videocard = ({ imgUrl, alt, border, setVideoId, videoId}) => {
         src={imgUrl}
         alt={alt}
         borderColor={border}
-        onClick={() => setVideoId(videoId)}
+        onClick={() => set_videoID(videoId)}
       />
       <CardInfo>
         <div>

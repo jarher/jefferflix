@@ -7,9 +7,16 @@ import Form from "../components/Form/Form.jsx";
 import FormWrapper from "../components/Form/FormWrapper.jsx";
 import CategoryList from "../components/CategoryList/CategoryList.jsx";
 import { Layer } from "../components/Layer/Layer.jsx";
-import { validateColor, validateTextarea, validateTitle, validateUser } from "../ValidateForm/Validate.js";
+import {
+  validateColor,
+  validateTextarea,
+  validateTitle,
+  validateUser,
+} from "../ValidateForm/Validate.js";
 import { useState, useContext, useEffect } from "react";
-import { FooterContext } from "../Context/Context.js";
+import { FooterContext } from "../Context/FooterContext.js";
+import { createCategory } from "../Api/Api.js";
+import { DataContext } from "../Context/DataContext.js";
 
 export const NewCategoryContainer = styled(Layer)`
   padding: 5%;
@@ -19,11 +26,14 @@ export const NewCategoryContainer = styled(Layer)`
 `;
 
 const NewCategory = () => {
-  const [catTitle, setCatTitle] = useState({value:"", valid:null});
-  const [catColor, setCatColor] = useState({value:"#FFBA05", valid:null});
-  const [catDescription, setcatDescription] = useState({value:"", valid:null});
+  const [catTitle, setCatTitle] = useState({ value: "", valid: null });
+  const [catColor, setCatColor] = useState({ value: "#FFBA05", valid: null });
+  const [catDescription, setcatDescription] = useState({
+    value: "",
+    valid: null,
+  });
   const [catUser, setCatUser] = useState({ value: "", valid: null });
-
+  const [categoryData, setCategoryData] = useState({});
   const formElements = [
     {
       formElement: "input",
@@ -75,21 +85,39 @@ const NewCategory = () => {
     },
   ];
 
-  const {bannerVisibility} = useContext(FooterContext);
+  const { bannerVisibility } = useContext(FooterContext);
+  const { categoriesList } = useContext(DataContext);
 
   useEffect(() => {
-      bannerVisibility(true);
-  }, []);
+    bannerVisibility(true);
+  });
+
+  useEffect(() => {
+    const sendData = async () => {
+      if (Object.keys(categoryData).length > 0) {
+        const res = await createCategory("/categories", categoryData);
+        console.log(res.status);
+      }
+    };
+    sendData();
+  }, [categoryData]);
 
   const cleanForm = () => {
-    setCatTitle("");
-    setCatColor("#FFBA05");
-    setcatDescription("");
-    setCatUser("");
+    setCatTitle({ value: "", valid: null });
+    setCatColor({ value: "#FFBA05", valid: null });
+    setcatDescription({ value: "", valid: null });
+    setCatUser({ value: "", valid: null });
   };
 
   const formSubmit = (e) => {
     e.preventDefault();
+    setCategoryData({
+      title: catTitle.value,
+      color: catColor.value,
+      desc: catDescription.value,
+      user: catUser.value,
+    });
+    cleanForm();
   };
   return (
     <NewCategoryContainer>
@@ -130,7 +158,7 @@ const NewCategory = () => {
           </ButtonsSubmit>
         </FormButtonsContainer>
       </Form>
-      <CategoryList />
+      {categoriesList.length > 0 && <CategoryList catList={categoriesList}/>}
     </NewCategoryContainer>
   );
 };

@@ -103,15 +103,7 @@ const Content = ({ name, desc, id }) => (
   </CategoryRow>
 );
 
-const catList = [
-  {
-    id: 1,
-    name: "Back End",
-    desc: "Todos los video que estoy usando para estudiar Back End ",
-  },
-];
-
-const CategoryList = () => (
+const CategoryList = ({catList}) => (
   <CategoryTable>
     <CategoryHeader>
       <CategoryNameHeader>Nombre</CategoryNameHeader>
@@ -121,7 +113,7 @@ const CategoryList = () => (
     </CategoryHeader>
     <CategoryBody>
       {catList.map((cat) => (
-        <Content name={cat.name} desc={cat.desc} key={cat.id} />
+        <Content name={cat.title} desc={cat.desc} key={cat.id} />
       ))}
     </CategoryBody>
   </CategoryTable>

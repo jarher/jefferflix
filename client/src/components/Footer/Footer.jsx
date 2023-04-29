@@ -9,7 +9,7 @@ import {
 import ButtonStyle from "../Button/Button.jsx";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { FooterContext } from "../../Context/Context";
+import { FooterContext } from "../../Context/FooterContext.js";
 
 const FooterStyle = styled.footer`
   display: flex;

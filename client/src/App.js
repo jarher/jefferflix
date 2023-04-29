@@ -7,10 +7,9 @@ import NewCategory from "./pages/NewCategory.jsx";
 import Error404 from "./pages/Error404.jsx";
 import Edit from "./pages/Edit.jsx";
 import GlobalStyle from "./global.js";
+import { DataProvider } from "./Context/DataContext.js";
 
 function App() {
-  
-
   const Layout = () => {
     return (
       <>
@@ -38,7 +37,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
+      <DataProvider>
+        <RouterProvider router={router} />
+      </DataProvider>
     </>
   );
 }

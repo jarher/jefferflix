@@ -18,8 +18,10 @@ import {
   validateUser,
 } from "../ValidateForm/Validate.js";
 import { useContext } from "react";
-import {FooterContext} from "../Context/Context.js";
+import { FooterContext } from "../Context/FooterContext.js";
 import { useEffect } from "react";
+import { createVideo, getCategories } from "../Api/Api.js";
+import { DataContext } from "../Context/DataContext.js";
 
 const NewVideoContainer = styled(Layer)`
   padding: 5%;
@@ -37,11 +39,6 @@ const ButtonRedirect = styled(FormButton)`
   }
 `;
 
-const options = [
-  { id: 1, value: "Front End" },
-  { id: 2, value: "Back End" },
-];
-
 const NewVideo = () => {
   const [title, setTitle] = useState({ value: "", valid: null });
   const [videoLink, setVideoLink] = useState({ value: "", valid: null });
@@ -49,9 +46,14 @@ const NewVideo = () => {
     value: "",
     valid: null,
   });
-  const [selected, setSelected] = useState({ value: "", valid: null });
+  const [categorySelected, setCategorySelected] = useState({
+    value: "",
+    valid: null,
+  });
   const [description, setDescription] = useState({ value: "", valid: null });
   const [user, setUser] = useState({ value: "", valid: null });
+  const [videoData, setVideoData] = useState({});
+  const [categories, setCategories] = useState([]);
 
   const formElements = [
     {
@@ -93,14 +95,14 @@ const NewVideo = () => {
     {
       formElement: "select",
       type: null,
-      state: selected,
+      state: categorySelected,
       labelText: "Seleccione una Categoría",
       placeholder: null,
       onChangeFunc(value) {
-        setSelected({ value: value, valid: validateSelect(value) });
+        setCategorySelected({ value: value, valid: validateSelect(value) });
       },
       errorMessage: "Seleccione una categoría",
-      options: options,
+      options: categories,
     },
     {
       formElement: "textarea",
@@ -123,30 +125,55 @@ const NewVideo = () => {
       onChangeFunc(input) {
         setUser({ value: input, valid: validateUser(input) });
       },
-      errorMessage: "No se acepta contenido vacío, ni caracteres especiales excepto los alfanuméricos, barra baja(_) y guión (-)",
+      errorMessage:
+        "No se acepta contenido vacío, ni caracteres especiales excepto los alfanuméricos, barra baja(_) y guión (-)",
       options: null,
     },
   ];
 
-  const {bannerVisibility} = useContext(FooterContext);
-
+  const { bannerVisibility } = useContext(FooterContext);
+  const { categoriesList} = useContext(DataContext);
+  
   useEffect(() => {
-      bannerVisibility(true);
-  }, []);
-  
+    bannerVisibility(true);
+    setCategories(
+      categoriesList.map((category) => {
+        return { id: category.id, value: category.title };
+      })
+    );
+  },[]);
 
-  
+ 
+  useEffect(() => {
+    const sendData = async () => {
+      if (Object.keys(videoData).length > 0) {
+        const res = await createVideo("/videoList", videoData);
+        console.log(res.status);
+      }
+    };
+    sendData();
+  }, [videoData]);
+
   const cleanForm = () => {
     setTitle({ value: "", valid: null });
     setVideoLink({ value: "", valid: null });
     setBackgroundVideo({ value: "", valid: null });
-    setSelected({ value: "", valid: null });
+    setCategorySelected({ value: "", valid: null });
     setDescription({ value: "", valid: null });
     setUser({ value: "", valid: null });
   };
 
   const formSubmit = (e) => {
     e.preventDefault();
+    setVideoData({
+      title: title.value,
+      videoLink: videoLink.value,
+      videoImg: backgroundVideo.value,
+      category: categorySelected.value,
+      desc: description.value,
+      user: user.value,
+    });
+    cleanForm();
   };
 
   return (
@@ -161,9 +188,9 @@ const NewVideo = () => {
             labelText,
             placeholder,
             onChangeFunc,
-            options
+            options,
           } = element;
-         
+
           return (
             <FormWrapper
               element={formElement}

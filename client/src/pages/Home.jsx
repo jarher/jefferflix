@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Carousel from "../components/Carousel/Carousel/Carousel.jsx";
 import { Layer } from "../components/Layer/Layer.jsx";
-import React, { useState } from "react";
+import React, { useContext, useEffect } from "react";
 import ButtonStyle from "../components/Button/Button.jsx";
 import {
   body_smaller,
@@ -11,17 +11,16 @@ import {
 } from "../components/UI/variables.js";
 import { MultipleItems } from "../components/Carousel/Slider/Slider.jsx";
 import Video from "../components/Video/Video.jsx";
-import { useContext } from "react";
-import { FooterContext } from "../Context/Context.js";
-import { useEffect } from "react";
+import { FooterContext } from "../Context/FooterContext.js";
+import { getCategories, getVideoList } from "../Api/Api.js";
+import { DataContext } from "../Context/DataContext.js";
 
-export const HomeStyled = styled(Layer)`
-`;
+export const HomeStyled = styled(Layer)``;
 const CarouselWrapper = styled.div`
   min-height: 60vh;
   padding-top: 2%;
   box-sizing: border-box;
-  margin-top:12vh;
+  margin-top: 12vh;
   @media (min-width: 425px) {
     padding-top: 1%;
   }
@@ -52,106 +51,43 @@ const SubtitleCategory = styled.h3`
 `;
 
 const Home = () => {
+  
   const { bannerVisibility } = useContext(FooterContext);
+  const {videoList, categoriesList, videoId} = useContext(DataContext);
 
   useEffect(() => {
     bannerVisibility(false);
-  }, []);
+  });
 
-  const [videoList, setVideoList] = useState([
-    {
-      id: 1,
-      title:
-        "IMPERIOS (Historia de China-5) El Último Imperio  -  Documentales",
-      videoLink: "https://www.youtube.com/watch?v=6i8TRX3A3ow",
-      videoImg:
-        "https://i.ytimg.com/vi/6i8TRX3A3ow/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBfgCTo1zbEQUrqQ2yIoxuGA_6whA",
-      category: "Historia",
-      desc: "Historia de china, con sus sabores y sinsabores. Extraño, exótico y sabroso",
-      user: "Jeffer Rojas",
-    },
-    {
-      id: 2,
-      title: "Encuentran la isla oculta del diablo",
-      videoLink: "https://www.youtube.com/s4OT2TPpbFI",
-      videoImg:
-        "https://i.ytimg.com/vi/s4OT2TPpbFI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCXgpB950FHL7MN1QssapVQPkdnLA",
-      category: "Misterios",
-      desc: "Isla misteriosa",
-      user: "Jeffer Rojas",
-    },
-    {
-      id: 3,
-      title: "ASIA (India)  -  Documentales",
-      videoLink: "https://www.youtube.com/watch?v=sv-6ukY2O7Q",
-      videoImg:
-        "https://i.ytimg.com/vi/sv-6ukY2O7Q/hqdefault.jpg?sqp=-oaymwEjCOADEI4CSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLC6lM8-0dgUaZ_1TqI7L3OUODDZtA",
-      category: "Historia",
-      desc: "Historia de la India",
-      user: "Jeffer Rojas",
-    },
-    {
-      id: 4,
-      title: "ASIA (India)  -  Documentales",
-      videoLink: "https://www.youtube.com/watch?v=sv-6ukY2O7Q",
-      videoImg:
-        "https://i.ytimg.com/vi/sv-6ukY2O7Q/hqdefault.jpg?sqp=-oaymwEjCOADEI4CSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLC6lM8-0dgUaZ_1TqI7L3OUODDZtA",
-      category: "Historia",
-      desc: "Historia de la India",
-      user: "Jeffer Rojas",
-    },
-    {
-      id: 5,
-      title:
-        "IMPERIOS (Historia de China-5) El Último Imperio  -  Documentales",
-      videoLink: "https://www.youtube.com/watch?v=6i8TRX3A3ow",
-      videoImg:
-        "https://i.ytimg.com/vi/6i8TRX3A3ow/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBfgCTo1zbEQUrqQ2yIoxuGA_6whA",
-      category: "Historia",
-      desc: "Historia de china",
-      user: "Jeffer Rojas",
-    },
-  ]);
-
-  const [categoriesList, setCategoriesList] = useState([
-    {
-      id: 100,
-      title: "Historia",
-      color: "red",
-      desc: "Sucesos de la humanidad",
-      user: "Jeffer Rojas",
-    },
-    {
-      id: 101,
-      title: "Misterios",
-      color: "green",
-      desc: "Acontecimientos extraños y sorprendentes",
-      user: "Jeffer Rojas",
-    },
-  ]);
-
-  const [videoId, setVideoId] = useState(1);
+  const categoryInVideo = videoList.map((video) => video.category);
 
   return (
     <HomeStyled>
-      <Video video={videoList.filter((video) => video.id === videoId)[0]} />
-      <CarouselWrapper>
-        {categoriesList.map((category) => (
-          <Carousel key={category.id}>
-            <CategoryButton catColor={category.color}>
-              {category.title}
-            </CategoryButton>
-            <SubtitleCategory>{category.desc}</SubtitleCategory>
-            <MultipleItems
-              elements={videoList.filter(
-                (video) => video.category === category.title
-              )}
-              color={category.color}
-              setVideoId={setVideoId}
-            />
-          </Carousel>
-        ))}
-      </CarouselWrapper>
+      {videoList.length > 0 && (
+        <>
+          <Video video={videoList.filter((video) => video.id === videoId)[0]} />
+          <CarouselWrapper>
+            {categoriesList.map((category) => (
+              <Carousel key={category.id}>
+                {categoryInVideo.includes(category.title) && (
+                  <>
+                    <CategoryButton catColor={category.color}>
+                      {category.title}
+                    </CategoryButton>
+                    <SubtitleCategory>{category.desc}</SubtitleCategory>
+                  </>
+                )}
+                <MultipleItems
+                  elements={videoList.filter(
+                    (video) => video.category === category.title
+                  )}
+                  color={category.color}
+                />
+              </Carousel>
+            ))}
+          </CarouselWrapper>
+        </>
+      )}
     </HomeStyled>
   );
 };

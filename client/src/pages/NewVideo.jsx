@@ -6,7 +6,7 @@ import FormTitle from "../components/Form/FormTitle.jsx";
 import FormButton from "../components/Form/FormButton.jsx";
 import FormButtonsContainer from "../components/Form/FormButtonsContainer.jsx";
 import ButtonsSubmit from "../components/Form/ButtonsSubmit.jsx";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import FormWrapper from "../components/Form/FormWrapper.jsx";
 import { Layer } from "../components/Layer/Layer.jsx";
 import {
@@ -17,11 +17,11 @@ import {
   validateTextarea,
   validateUser,
 } from "../ValidateForm/Validate.js";
-import { useContext } from "react";
 import { FooterContext } from "../Context/FooterContext.js";
-import { useEffect } from "react";
 import { createVideo, getCategories } from "../Api/Api.js";
 import { DataContext } from "../Context/DataContext.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const NewVideoContainer = styled(Layer)`
   padding: 5%;
@@ -29,7 +29,6 @@ const NewVideoContainer = styled(Layer)`
     align-items: center;
   }
 `;
-
 const ButtonRedirect = styled(FormButton)`
   font-size: ${body_small};
   align-self: end;
@@ -40,6 +39,9 @@ const ButtonRedirect = styled(FormButton)`
 `;
 
 const NewVideo = () => {
+   const { bannerVisibility } = useContext(FooterContext);
+   const { toastifySettings } = useContext(DataContext);
+
   const [title, setTitle] = useState({ value: "", valid: null });
   const [videoLink, setVideoLink] = useState({ value: "", valid: null });
   const [backgroundVideo, setBackgroundVideo] = useState({
@@ -52,7 +54,7 @@ const NewVideo = () => {
   });
   const [description, setDescription] = useState({ value: "", valid: null });
   const [user, setUser] = useState({ value: "", valid: null });
-  const [videoData, setVideoData] = useState({});
+
   const [categories, setCategories] = useState([]);
 
   const formElements = [
@@ -131,28 +133,22 @@ const NewVideo = () => {
     },
   ];
 
-  const { bannerVisibility } = useContext(FooterContext);
-  const { categoriesList} = useContext(DataContext);
-  
-  useEffect(() => {
-    bannerVisibility(true);
+ 
+
+const getCategoryData = async () => {
+  const res = await getCategories("/categories");
+  if (res.status === 200 && res.data.length > 0) {
     setCategories(
-      categoriesList.map((category) => {
+      res.data.map((category) => {
         return { id: category.id, value: category.title };
       })
     );
-  },[]);
-
- 
+  }
+};
   useEffect(() => {
-    const sendData = async () => {
-      if (Object.keys(videoData).length > 0) {
-        const res = await createVideo("/videoList", videoData);
-        console.log(res.status);
-      }
-    };
-    sendData();
-  }, [videoData]);
+    bannerVisibility(true);
+     getCategoryData();
+  }, []);
 
   const cleanForm = () => {
     setTitle({ value: "", valid: null });
@@ -163,9 +159,9 @@ const NewVideo = () => {
     setUser({ value: "", valid: null });
   };
 
-  const formSubmit = (e) => {
+  const formSubmit = async (e) => {
     e.preventDefault();
-    setVideoData({
+    const res = await createVideo("/videoLink", {
       title: title.value,
       videoLink: videoLink.value,
       videoImg: backgroundVideo.value,
@@ -173,51 +169,73 @@ const NewVideo = () => {
       desc: description.value,
       user: user.value,
     });
+    if (res.status === 201) {
+      toast.success("Vídeo Creado satisfactoriamente", toastifySettings);
+    }
+    if (res.status === 404) {
+      toast.error(
+        "Ocurrió un error, inténtelo de nuevo más tarde",
+        toastifySettings
+      );
+    }
     cleanForm();
   };
 
   return (
     <NewVideoContainer>
-      <Form onSubmit={formSubmit}>
-        <FormTitle>Nuevo Video</FormTitle>
-        {formElements.map((element, i) => {
-          const {
-            formElement,
-            state,
-            type,
-            labelText,
-            placeholder,
-            onChangeFunc,
-            options,
-          } = element;
+      <>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+        <Form onSubmit={formSubmit}>
+          <FormTitle>Nuevo Video</FormTitle>
+          {formElements.map((element, i) => {
+            const {
+              formElement,
+              state,
+              type,
+              labelText,
+              placeholder,
+              onChangeFunc,
+            } = element;
 
-          return (
-            <FormWrapper
-              element={formElement}
-              type={type}
-              labelText={labelText}
-              value={state.value}
-              placeholder={placeholder}
-              error={state.valid === false}
-              errorMessage={state.valid === false ? element.errorMessage : ""}
-              onChangeFunc={onChangeFunc}
-              options={options}
-              key={i}
-            />
-          );
-        })}
-        <FormButtonsContainer>
-          <ButtonsSubmit>
-            <FormButton>Guardar</FormButton>
-            <FormButton $clean onClick={cleanForm}>
-              Limpiar
-            </FormButton>
-          </ButtonsSubmit>
-          <ButtonRedirect>
-            <Link to="/newCategory">Nueva Categoría</Link>
-          </ButtonRedirect>
-        </FormButtonsContainer>
-      </Form>
+            return (
+              <FormWrapper
+                element={formElement}
+                type={type}
+                labelText={labelText}
+                value={state.value}
+                placeholder={placeholder}
+                error={state.valid === false}
+                errorMessage={state.valid === false ? element.errorMessage : ""}
+                onChangeFunc={onChangeFunc}
+                options={categories}
+                key={i}
+              />
+            );
+          })}
+          <FormButtonsContainer>
+            <ButtonsSubmit>
+              <FormButton>Guardar</FormButton>
+              <FormButton $clean onClick={cleanForm}>
+                Limpiar
+              </FormButton>
+            </ButtonsSubmit>
+            <ButtonRedirect>
+              <Link to="/newCategory">Nueva Categoría</Link>
+            </ButtonRedirect>
+          </FormButtonsContainer>
+        </Form>
+      </>
     </NewVideoContainer>
   );
 };

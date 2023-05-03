@@ -5,6 +5,8 @@ import {
 } from "../UI/variables.js";
 import ButtonStyle from "../Button/Button.jsx";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { DataContext } from "../../Context/DataContext.js";
 
 const HeaderStyle = styled.header`
   display: flex;
@@ -35,11 +37,21 @@ const ButtonHeader = styled(ButtonStyle)`
   }
 `;
 
-const Header = () => <HeaderStyle>
-  <Banner />
-  <ButtonHeader>
-    <Link to="/newVideo">Nuevo Video</Link>
-  </ButtonHeader>
-</HeaderStyle>;
+const Header = () => {
+  
+  const {alertMessage, setAlert_Message} = useContext(DataContext);
+
+  
+  return (
+  <HeaderStyle>
+    <>
+      
+      <Banner />
+      <ButtonHeader>
+        <Link to="/newVideo">Nuevo Video</Link>
+      </ButtonHeader>
+    </>
+  </HeaderStyle>
+)};
 
 export default Header;

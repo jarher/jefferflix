@@ -58,7 +58,6 @@ const theme = createTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          backgroundColor: color_gray_750,
           margin: 0,
           "&.Mui-selected": {
             backgroundColor: color_gray_750,

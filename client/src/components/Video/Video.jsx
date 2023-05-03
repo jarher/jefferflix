@@ -8,7 +8,7 @@ import getVideoUrl from "./getVideoUrl.js";
 
 const VideoWrapper = styled.div`
   position: sticky;
-  z-index:999;
+  z-index:998;
   left: 0;
   right: 0;
   top:11vh;

@@ -17,6 +17,8 @@ import { useState, useContext, useEffect } from "react";
 import { FooterContext } from "../Context/FooterContext.js";
 import { createCategory } from "../Api/Api.js";
 import { DataContext } from "../Context/DataContext.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const NewCategoryContainer = styled(Layer)`
   padding: 5%;
@@ -33,7 +35,7 @@ const NewCategory = () => {
     valid: null,
   });
   const [catUser, setCatUser] = useState({ value: "", valid: null });
-  const [categoryData, setCategoryData] = useState({});
+
   const formElements = [
     {
       formElement: "input",
@@ -86,21 +88,12 @@ const NewCategory = () => {
   ];
 
   const { bannerVisibility } = useContext(FooterContext);
-  const { categoriesList } = useContext(DataContext);
+  const { getCategoryData, categoryList, toastifySettings } =
+    useContext(DataContext);
 
   useEffect(() => {
     bannerVisibility(true);
   });
-
-  useEffect(() => {
-    const sendData = async () => {
-      if (Object.keys(categoryData).length > 0) {
-        const res = await createCategory("/categories", categoryData);
-        console.log(res.status);
-      }
-    };
-    sendData();
-  }, [categoryData]);
 
   const cleanForm = () => {
     setCatTitle({ value: "", valid: null });
@@ -109,56 +102,82 @@ const NewCategory = () => {
     setCatUser({ value: "", valid: null });
   };
 
-  const formSubmit = (e) => {
+  const formSubmit = async (e) => {
     e.preventDefault();
-    setCategoryData({
+    const res = await createCategory("/categories", {
       title: catTitle.value,
       color: catColor.value,
       desc: catDescription.value,
       user: catUser.value,
     });
+
+    if (res.status === 201) {
+      toast.success("Categoría Creada satisfactoriamente", toastifySettings);
+      getCategoryData();
+    }
+    if (res.status === 404) {
+      toast.error(
+        "Ocurrió un error, inténtelo de nuevo más tarde",
+        toastifySettings
+      );
+    }
     cleanForm();
   };
+  
   return (
     <NewCategoryContainer>
-      <Form onSubmit={formSubmit}>
-        <FormTitle>Nueva Categoría</FormTitle>
-        {formElements.map((element, i) => {
-          const {
-            formElement,
-            state,
-            type,
-            labelText,
-            placeholder,
-            onChangeFunc,
-            options,
-          } = element;
+      <>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+        <Form onSubmit={formSubmit}>
+          <FormTitle>Nueva Categoría</FormTitle>
+          {formElements.map((element, i) => {
+            const {
+              formElement,
+              state,
+              type,
+              labelText,
+              placeholder,
+              onChangeFunc,
+              options,
+            } = element;
 
-          return (
-            <FormWrapper
-              element={formElement}
-              type={type}
-              labelText={labelText}
-              value={state.value}
-              placeholder={placeholder}
-              error={state.valid === false}
-              errorMessage={state.valid === false ? element.errorMessage : ""}
-              onChangeFunc={onChangeFunc}
-              options={options}
-              key={i}
-            />
-          );
-        })}
-        <FormButtonsContainer>
-          <ButtonsSubmit>
-            <FormButton>Guardar</FormButton>
-            <FormButton $clean onClick={cleanForm}>
-              Limpiar
-            </FormButton>
-          </ButtonsSubmit>
-        </FormButtonsContainer>
-      </Form>
-      {categoriesList.length > 0 && <CategoryList catList={categoriesList}/>}
+            return (
+              <FormWrapper
+                element={formElement}
+                type={type}
+                labelText={labelText}
+                value={state.value}
+                placeholder={placeholder}
+                error={state.valid === false}
+                errorMessage={state.valid === false ? element.errorMessage : ""}
+                onChangeFunc={onChangeFunc}
+                options={options}
+                key={i}
+              />
+            );
+          })}
+          <FormButtonsContainer>
+            <ButtonsSubmit>
+              <FormButton>Guardar</FormButton>
+              <FormButton $clean onClick={cleanForm}>
+                Limpiar
+              </FormButton>
+            </ButtonsSubmit>
+          </FormButtonsContainer>
+        </Form>
+        {categoryList.length > 0 && <CategoryList catList={categoryList} />}
+      </>
     </NewCategoryContainer>
   );
 };

@@ -1,42 +1,5 @@
 {
-  "videoList": [
-    {
-      "id": "af296310-89fc-4560-b2ea-dc53a55dd3f5",
-      "title": "Andrey Kravtsov - But I Love It MSTRD",
-      "videoLink": "https://www.youtube.com/watch?v=GAXSM4ZbtnU",
-      "videoImg": "https://i.ytimg.com/vi/GAXSM4ZbtnU/hqdefault.jpg?sqp=-oaymwE2CPYBEIoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhyIFAoMTAP&rs=AOn4CLB5gtiO4_dwFZkI_xnCToVzDKDzDg",
-      "category": "Música",
-      "desc": "Progresive House",
-      "user": "Jeffer Rojas"
-    },
-    {
-      "id": "9f812e86-6387-4093-9743-21fc4c919358",
-      "title": "Bluestone - Namaste",
-      "videoLink": "https://www.youtube.com/watch?v=wMBpHagMDP0&list=PL6C88108EA2EF90C1&index=10&pp=iAQB8AUB",
-      "videoImg": "https://i.ytimg.com/vi/wMBpHagMDP0/hqdefault.jpg?sqp=-oaymwEbCKgBEF5IVfKriqkDDggBFQAAiEIYAXABwAEG&rs=AOn4CLDeX44AD4Yw7vKPM2hGbCjon8TZIA",
-      "category": "Música",
-      "desc": "Track 11 del álbum Anjunabeats worldwide vol 4",
-      "user": "Jeffer Rojas"
-    },
-    {
-      "id": "f681e09c-4b29-485b-8f28-d242f9e928e2",
-      "title": "ASIA (China) - Documentales",
-      "videoLink": "https://www.youtube.com/watch?v=Qnh6y4eDWWM&t=586s",
-      "videoImg": "https://i.ytimg.com/an_webp/Qnh6y4eDWWM/mqdefault_6s.webp?du=3000&sqp=COS-sqIG&rs=AOn4CLDrsbdKDv-247roo2aeAZNucT7dMA",
-      "category": "Historia",
-      "desc": "Historia de China y su cultura",
-      "user": "Jeffer Rojas"
-    },
-    {
-      "id": "573f26e9-b443-4325-9c96-ae5f904dbb17",
-      "title": "Noche de misterio - Extraterrestres entre nosotros",
-      "videoLink": "https://www.youtube.com/watch?v=TFVGudWG1kI",
-      "videoImg": "https://i.ytimg.com/an_webp/TFVGudWG1kI/mqdefault_6s.webp?du=3000&sqp=CNazsqIG&rs=AOn4CLC_Lrxrg4lXKKWcfUKVSGunYOyYxQ",
-      "category": "Misterio",
-      "desc": "Encuentros inesperados y sorprendentes con alienígenas",
-      "user": "Jeffer Rojas"
-    }
-  ],
+  "videoList": [],
   "categories": [
     {
       "id": "dad838c1-087e-424b-8410-1e5e72700909",
@@ -58,6 +21,48 @@
       "color": "#57f22c",
       "desc": "Fenómenos estraños y eventos paranormales",
       "user": "Jeffer Rojas"
+    },
+    {
+      "id": "9fbf4d92-311c-4591-b515-f7ee130f6b5c",
+      "title": "Programación",
+      "color": "#c90380",
+      "desc": "Librerías, frontend, backend, lenguajes, arquitectura de software y más.",
+      "user": "jeffer rojas"
+    },
+    {
+      "id": "26ac7da8-1652-4eb5-b4ff-f229583ed73d",
+      "title": "Curisidades",
+      "color": "#ff7e05",
+      "desc": "Casos divertidos, impactantes e interesantes",
+      "user": "jeffer rojas"
+    },
+    {
+      "id": "05311822-364b-4fd0-9191-2ad3d9b70c4a",
+      "title": "Peliculas",
+      "color": "#59a8d9",
+      "desc": "Recientes producciones de acción",
+      "user": "jeff r"
+    },
+    {
+      "id": "55652d57-af66-49d0-b770-f4ffce9aef22",
+      "title": "Series",
+      "color": "#e0591f",
+      "desc": "acción, ficción",
+      "user": "jeffer rojas"
+    },
+    {
+      "id": "7d119fe7-fb15-4527-81a9-6f0c00ba00a6",
+      "title": "FrontEnd",
+      "color": "#a50ba8",
+      "desc": "React y demas...",
+      "user": "jeff"
+    },
+    {
+      "id": "4a3a6471-62df-4896-b64a-927ea79d150d",
+      "title": "backEnd",
+      "color": "#e205ff",
+      "desc": "sql y otros",
+      "user": "jeff"
     }
   ]
 }

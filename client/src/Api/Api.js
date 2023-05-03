@@ -16,6 +16,10 @@ export const createVideo = async(url, getData) => {
     return await api.post(url, { id: uuidv4(), ...getData });
 }
 
+export const deleteVideo = async(url) => {
+  return await api.delete(url);
+}
+
 export const getCategories = async(url) => {
   return await api.get(url);
   

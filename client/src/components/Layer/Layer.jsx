@@ -3,7 +3,7 @@ import { color_black_200 } from "../UI/variables";
 
 export const Layer = styled.div`
   background-color: ${color_black_200};
-  min-height: 80vh;
+  min-height: calc(100vh - 10vh);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

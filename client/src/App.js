@@ -10,7 +10,8 @@ import GlobalStyle from "./global.js";
 import { DataProvider } from "./Context/DataContext.js";
 
 function App() {
-  const Layout = () => {
+
+   const Layout = () => {
     return (
       <>
         <GlobalStyle />
@@ -26,7 +27,7 @@ function App() {
       path: "/",
       element: <Layout />,
       children: [
-        { path: "/", element: <Home />},
+        { path: "/", element: <Home /> },
         { path: "/newVideo", element: <NewVideo /> },
         { path: "/newCategory", element: <NewCategory /> },
         { path: "/edit/:id", element: <Edit /> },
@@ -36,11 +37,9 @@ function App() {
   ]);
 
   return (
-    <>
-      <DataProvider>
-        <RouterProvider router={router} />
-      </DataProvider>
-    </>
+    <DataProvider>
+      <RouterProvider router={router} />
+    </DataProvider>
   );
 }
 

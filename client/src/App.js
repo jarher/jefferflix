@@ -8,16 +8,18 @@ import Error404 from "./pages/Error404.jsx";
 import Edit from "./pages/Edit.jsx";
 import GlobalStyle from "./global.js";
 import { DataProvider } from "./Context/DataContext.js";
+import { useWindowSize } from "react-use";
 
 function App() {
 
    const Layout = () => {
+    const { width } = useWindowSize();
     return (
       <>
         <GlobalStyle />
         <Header />
         <Outlet />
-        <Footer />
+        <Footer windowWidth={width}/>
       </>
     );
   };
@@ -30,7 +32,7 @@ function App() {
         { path: "/", element: <Home /> },
         { path: "/newVideo", element: <NewVideo /> },
         { path: "/newCategory", element: <NewCategory /> },
-        { path: "/edit/:id", element: <Edit /> },
+        { path: "/newCategory/:id/edit", element: <Edit /> },
         { path: "*", element: <Error404 /> },
       ],
     },

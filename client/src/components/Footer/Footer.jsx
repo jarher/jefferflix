@@ -31,6 +31,9 @@ const ButtonFooter = styled(ButtonStyle)`
   align-items: center;
   justify-content: center;
   font-weight: 600;
+  @media (min-width:1024px){
+    display: none;
+  }
 `;
 
 const BannerContainer = styled.div`
@@ -51,7 +54,6 @@ const Author = styled.div`
 
 const Footer = () => {
   const {banner} = useContext(FooterContext);
-
   return (
     <FooterStyle>
       {banner && (

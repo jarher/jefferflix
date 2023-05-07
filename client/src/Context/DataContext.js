@@ -1,6 +1,7 @@
 import { createContext } from "react";
-import { useState, useEffect } from "react";
-import { getCategories } from "../Api/Api";
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const DataContext = createContext();
 
@@ -9,10 +10,13 @@ export function DataProvider({ children }) {
 
   const [modalMessage, setModalMessage] = useState("");
 
+  const [toastMessage, setToastMessage] = useState({value:"", success:null});
+
   const set_videoID = (value) => setVideoId(value);
 
   const set_Modal_Message = (value) => setModalMessage(value);
 
+  const set_Toast_Message = (value) => setToastMessage(value);
 
   const toastifySettings = {
     position: "top-center",
@@ -25,6 +29,20 @@ export function DataProvider({ children }) {
     theme: "dark",
   };
 
+  const ToastifyComponent = () => (
+    <ToastContainer
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="dark"
+    />
+  );
   return (
     <DataContext.Provider
       value={{
@@ -33,6 +51,9 @@ export function DataProvider({ children }) {
         modalMessage,
         set_Modal_Message,
         toastifySettings,
+        ToastifyComponent,
+        toastMessage,
+        set_Toast_Message
       }}
     >
       {children}

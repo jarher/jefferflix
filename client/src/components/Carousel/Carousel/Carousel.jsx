@@ -5,7 +5,10 @@ const Carousel = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 2% 2%;
-  @media (min-width: 1024px) {
+  @media (min-width: 425px) {
+    margin-top: 5%;
+  }
+  @media (min-width: 600px) {
     margin:1%;
   }
 `;

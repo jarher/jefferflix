@@ -15,9 +15,9 @@ import {
 } from "../ValidateForm/Validate.js";
 import { useState, useContext, useEffect } from "react";
 import { FooterContext } from "../Context/FooterContext.js";
-import { createCategory } from "../Api/Api.js";
+import { createCategory, getCategories } from "../Api/Api.js";
 import { DataContext } from "../Context/DataContext.js";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const NewCategoryContainer = styled(Layer)`
@@ -28,6 +28,10 @@ export const NewCategoryContainer = styled(Layer)`
 `;
 
 const NewCategory = () => {
+  const { bannerVisibility } = useContext(FooterContext);
+  const { toastifySettings, ToastifyComponent, toastMessage } =
+    useContext(DataContext);
+
   const [catTitle, setCatTitle] = useState({ value: "", valid: null });
   const [catColor, setCatColor] = useState({ value: "#FFBA05", valid: null });
   const [catDescription, setcatDescription] = useState({
@@ -35,6 +39,7 @@ const NewCategory = () => {
     valid: null,
   });
   const [catUser, setCatUser] = useState({ value: "", valid: null });
+  const [categoryList, setCategoryList] = useState([]);
 
   const formElements = [
     {
@@ -87,13 +92,20 @@ const NewCategory = () => {
     },
   ];
 
-  const { bannerVisibility } = useContext(FooterContext);
-  const { getCategoryData, categoryList, toastifySettings } =
-    useContext(DataContext);
-
-  useEffect(() => {
-    bannerVisibility(true);
-  });
+  const sendData = async (values) => {
+    try {
+      const res = await createCategory("/categories", values);
+      if (res.status === 201) {
+        toast.success("Categoría Creada satisfactoriamente", toastifySettings);
+        getCategoryData();
+      }
+    } catch {
+      toast.error(
+        "Ocurrió un error, inténtelo de nuevo más tarde",
+        toastifySettings
+      );
+    }
+  };
 
   const cleanForm = () => {
     setCatTitle({ value: "", valid: null });
@@ -102,43 +114,47 @@ const NewCategory = () => {
     setCatUser({ value: "", valid: null });
   };
 
+  const getCategoryData = async () => {
+    try {
+      const res = await getCategories("/categories");
+      if (res.status === 200 && res.data.length > 0) {
+        setCategoryList(res.data);
+      }
+    } catch {
+      toast.error("Error de conexión al servidor", toastifySettings);
+    }
+  };
+
+  useEffect(() => {
+    bannerVisibility(true);
+    getCategoryData();
+  }, []);
+
+  useEffect(() => {
+    if (toastMessage.success === true) {
+      toast.success(toastMessage.value, toastifySettings);
+    }
+    if (toastMessage.success === false) {
+      toast.error(toastMessage.value, toastifySettings);
+    };
+    getCategoryData();
+  }, [toastMessage]);
+
   const formSubmit = async (e) => {
     e.preventDefault();
-    const res = await createCategory("/categories", {
+    sendData({
       title: catTitle.value,
       color: catColor.value,
       desc: catDescription.value,
       user: catUser.value,
     });
-
-    if (res.status === 201) {
-      toast.success("Categoría Creada satisfactoriamente", toastifySettings);
-      getCategoryData();
-    }
-    if (res.status === 404) {
-      toast.error(
-        "Ocurrió un error, inténtelo de nuevo más tarde",
-        toastifySettings
-      );
-    }
     cleanForm();
   };
-  
+
   return (
     <NewCategoryContainer>
       <>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
+        <ToastifyComponent />
         <Form onSubmit={formSubmit}>
           <FormTitle>Nueva Categoría</FormTitle>
           {formElements.map((element, i) => {

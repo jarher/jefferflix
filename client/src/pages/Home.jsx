@@ -12,11 +12,13 @@ import {
 } from "../components/UI/variables.js";
 import { MultipleItems } from "../components/Carousel/Slider/Slider.jsx";
 import Video from "../components/Video/Video.jsx";
-import { FooterContext } from "../Context/FooterContext.js";
 import { getVideoList, deleteVideo, getCategories } from "../Api/Api.js";
 import { DataContext } from "../Context/DataContext.js";
+import { FooterContext } from "../Context/FooterContext.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useWindowSize } from "react-use";
+
 
 export const HomeStyled = styled(Layer)``;
 
@@ -27,7 +29,7 @@ const CarouselWrapper = styled.div`
   margin-top: 12vh;
   @media (min-width: 425px) {
     padding-top: 1%;
-    margin-top: 1vh;
+    margin-top: 5vh;
   }
 `;
 const CategoryButton = styled(ButtonStyle)`
@@ -79,18 +81,23 @@ const ModalButtonsWrapper = styled.div`
 const ModalButton = styled(ButtonStyle)``;
 
 const Home = () => {
-  const { bannerVisibility } = useContext(FooterContext);
   const { videoId, set_videoID, modalMessage, set_Modal_Message } =
     useContext(DataContext);
+  const { bannerVisibility } = useContext(FooterContext);
+  const {toastifySettings, ToastifyComponent} = useContext(DataContext);
 
   const [videoList, setVideoList] = useState([]);
   const [categories, setCategories] = useState([]);
 
   const getVideoData = async () => {
-    const res = await getVideoList("/videoList");
-    if (res.status === 200 && res.data.length > 0) {
-      set_videoID(res.data[0].id);
-      setVideoList(res.data || []);
+    try {
+      const res = await getVideoList("/videoList");
+      if (res.status === 200 && res.data.length > 0) {
+        set_videoID(res.data[0].id);
+        setVideoList(res.data);
+      }
+    } catch {
+      toast.error("Error de conexión al servidor", toastifySettings);
     }
   };
 
@@ -101,14 +108,17 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    bannerVisibility(false);
-  });
-
-  useEffect(() => {
-    getVideoData();
-    getCategoryData();
-  }, []);
+  const delete_video = async () => {
+    const res = await deleteVideo(`/videoList/${videoId}`);
+    if (res.status === 200) {
+      toast.success("Vídeo Eliminado", toastifySettings);
+      getVideoData();
+    }
+    if (res.status === 404) {
+      toast.error("Ocurrió un error", toastifySettings);
+    }
+    set_Modal_Message("");
+  };
 
   function ModalMessage({ message }) {
     return (
@@ -124,48 +134,29 @@ const Home = () => {
     );
   }
 
-  const toastifySettings = {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "dark",
-  };
-
-  const delete_video = async () => {
-    const res = await deleteVideo(`/videoList/${videoId}`);
-    if (res.status === 200) {
-      toast.success("Vídeo Eliminado", toastifySettings);
-      getVideoData();
-    }
-    if (res.status === 500) {
-      toast.error("Ocurrió un error", toastifySettings);
-    }
-    set_Modal_Message("");
-  };
-
   const categoryInVideo = videoList.map((video) => video.category);
+
+  const { width } = useWindowSize();
+
+  useEffect(() => {
+    if (width >= 768) {
+      bannerVisibility(true);
+    }else{
+      bannerVisibility(false)
+    }
+  });
+
+  useEffect(() => {
+    getVideoData();
+    getCategoryData();
+  }, []);
 
   return (
     <HomeStyled>
       <>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
+        <ToastifyComponent />
         {modalMessage && <ModalMessage message={modalMessage} />}
-        {videoList.length !== 0 && (
+        {videoList.length > 0 && (
           <>
             <Video
               video={videoList.filter((video) => video.id === videoId)[0]}

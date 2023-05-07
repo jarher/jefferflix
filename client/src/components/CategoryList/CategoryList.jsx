@@ -1,13 +1,16 @@
 import styled from "styled-components";
 import {
   body_big,
-  body_normal,
+  body_small,
   color_black,
   color_gray_lighter,
   color_primary,
 } from "../UI/variables";
 import ButtonStyle from "../Button/Button";
 import { Link } from "react-router-dom";
+import { deleteCategory } from "../../Api/Api";
+import { useContext } from "react";
+import { DataContext } from "../../Context/DataContext";
 
 const HeaderCell = styled.div`
   font-family: "Roboto-Regular";
@@ -32,37 +35,30 @@ const CategoryTable = styled.div`
     width: 710px;
   }
 `;
-
 const CategoryHeader = styled.div`
   display: flex;
   width: 100%;
   border-bottom: 4px solid ${color_primary};
 `;
-
 const CategoryNameHeader = styled(HeaderCell)``;
-
 const CategoryDescriptionHeader = styled(HeaderCell)`
   width: 50%;
 `;
-
 const CategoryEditHeader = styled(HeaderCell)``;
-
 const CategoryBody = styled.div`
   border-left-width: 4px;
   border-right-width: 4px;
   border-bottom-width: 4px;
 `;
-
 const CategoryRow = styled.div`
   overflow: hidden;
   box-sizing: border-box;
   display: flex;
   width: 100%;
 `;
-
 const CategoryCol = styled.div`
   color: ${color_gray_lighter};
-  font-size: ${body_normal};
+  font-size: ${body_small};
   width: 16.6%;
   padding: 1%;
   box-sizing: border-box;
@@ -75,48 +71,66 @@ const CategoryCol = styled.div`
     border-left: none;
   }
 `;
-
 const CategoryDesc = styled(CategoryCol)`
   width: 50%;
 `;
-
 const ButtonEdit = styled(ButtonStyle)`
   background-color: transparent;
   color: ${color_gray_lighter};
   width: 100%;
 `;
 
-const DeleteCategory = (id) => {};
+const Content = ({ name, desc, id }) => {
+  const {set_Toast_Message} = useContext(DataContext);
 
-const Content = ({ name, desc, id }) => (
-  <CategoryRow>
-    <CategoryCol>{name}</CategoryCol>
-    <CategoryDesc>{desc}</CategoryDesc>
-    <CategoryCol>
-      <ButtonEdit>
-        <Link to={`/edit/${id}`}>Editar</Link>
-      </ButtonEdit>
-    </CategoryCol>
-    <CategoryCol>
-      <ButtonEdit onClick={DeleteCategory(id)}>Eliminar</ButtonEdit>
-    </CategoryCol>
-  </CategoryRow>
-);
+  const delCat = async () =>{
+      try {
+        const res = await deleteCategory(`/categories/${id}`);
+        if (res.status === 200) {
+          set_Toast_Message({value:"Categoría eliminada", success:true});
+        }
+      } catch {
+        set_Toast_Message({value:"Error de conexión al servidor", success:false});
+      }
+  }
+  return (
+    <CategoryRow>
+      <CategoryCol>{name}</CategoryCol>
+      <CategoryDesc>{desc}</CategoryDesc>
+      <CategoryCol>
+        <ButtonEdit>
+          <Link to={`/newCategory/${id}/edit`}>Editar</Link>
+        </ButtonEdit>
+      </CategoryCol>
+      <CategoryCol>
+        <ButtonEdit onClick={delCat}>Eliminar</ButtonEdit>
+      </CategoryCol>
+    </CategoryRow>
+  );
+};
 
-const CategoryList = ({catList}) => (
-  <CategoryTable>
-    <CategoryHeader>
-      <CategoryNameHeader>Nombre</CategoryNameHeader>
-      <CategoryDescriptionHeader>Descripción</CategoryDescriptionHeader>
-      <CategoryEditHeader>Editar</CategoryEditHeader>
-      <CategoryEditHeader>Eliminar</CategoryEditHeader>
-    </CategoryHeader>
-    <CategoryBody>
-      {catList.map((cat) => (
-        <Content name={cat.title} desc={cat.desc} key={cat.id} />
-      ))}
-    </CategoryBody>
-  </CategoryTable>
-);
+const CategoryList = ({ catList }) => {
+  return (
+    <CategoryTable>
+      <CategoryHeader>
+        <CategoryNameHeader>Nombre</CategoryNameHeader>
+        <CategoryDescriptionHeader>Descripción</CategoryDescriptionHeader>
+        <CategoryEditHeader>Editar</CategoryEditHeader>
+        <CategoryEditHeader>Eliminar</CategoryEditHeader>
+      </CategoryHeader>
+      <CategoryBody>
+        {catList.map((cat) => (
+          <Content
+            name={cat.title}
+            desc={cat.desc}
+            id={cat.id}
+            delCat={cat.delCat}
+            key={cat.id}
+          />
+        ))}
+      </CategoryBody>
+    </CategoryTable>
+  );
+};
 
 export default CategoryList;

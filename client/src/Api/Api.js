@@ -25,6 +25,18 @@ export const getCategories = async(url) => {
   
 }
 
+export const getCategory = async(url) => {
+  return await api.get(url)
+}
+
 export const createCategory = async(url, getData) => {
     return await api.post(url, { id: uuidv4(), ...getData });
+}
+
+export const updateCategory = async(url, getData) => {
+  return await api.put(url, getData );
+}
+
+export const deleteCategory = async(url) => {
+  return await api.delete(url);
 }

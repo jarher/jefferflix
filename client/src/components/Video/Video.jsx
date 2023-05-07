@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import { BsFillPlayFill } from "react-icons/bs";
-import { body_big, body_medium, body_normal, color_black, color_gray_lighter } from "../UI/variables.js";
+import {
+  body_big,
+  body_medium,
+  body_normal,
+  color_black,
+  color_gray_lighter,
+} from "../UI/variables.js";
 import ButtonStyle from "../Button/Button.jsx";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -8,12 +14,12 @@ import getVideoUrl from "./getVideoUrl.js";
 
 const VideoWrapper = styled.div`
   position: sticky;
-  z-index:998;
+  z-index: 998;
   left: 0;
   right: 0;
-  top:11vh;
-  @media (min-width:1024px){
-    position:relative
+  top: 11vh;
+  @media (min-width: 1024px) {
+    position: relative;
   }
 `;
 
@@ -21,14 +27,14 @@ const VideoContainer = styled.div`
   position: relative;
   height: 30vh;
   background-color: ${color_black};
-  @media (min-width: 425px) {
+  overflow: hidden;
+  @media (min-width: 600px) {
     height: 50vh;
-    overflow: hidden;
-    padding:1% 0;
+    padding: 1% 0;
   }
-   @media (min-width: 425px) {
-    height: 60vh;
-   }
+  @media(min-width:1024px){
+    height: 70vh;
+  }
 `;
 
 const VideoLayer = styled.div`
@@ -37,24 +43,26 @@ const VideoLayer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+
   background: linear-gradient(
     0deg,
     rgba(0, 0, 0, 0.9) 0%,
     rgba(0, 0, 0, 0.6) 100%
   );
-  display: grid;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-column: repeat(3, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  display: flex;
+  justify-content: center;
+  @media (min-width: 768px) {
+    justify-content: space-between;
+    padding: 0 5%;
+  }
 `;
 
 const VideoPlayer = styled.iframe`
   width: 100%;
-  height:100%;
+  height: 100%;
   @media (min-width: 768px) {
-    width:50%;
-    margin:auto 25%;
+    width: 50%;
+    margin: auto 25%;
   }
 `;
 
@@ -66,23 +74,20 @@ const ButtonPlayer = styled(ButtonStyle)`
   align-items: center;
   justify-content: center;
   align-self: center;
-  justify-self: center;
   cursor: pointer;
   @media (min-width: 768px) {
-    grid-area: 2 / 3 / 3 / 4;
+    width: 10%;
   }
 `;
 
 const VideoDescription = styled.div`
   display: none;
   align-self: center;
-  justify-self: center;
   line-height: ${body_big};
   @media (min-width: 768px) {
     display: block;
     font-size: ${body_medium};
     color: ${color_gray_lighter};
-    grid-area: 2 / 1 / 3 / 2;
     width: 300px;
   }
 `;
@@ -108,8 +113,7 @@ const Video = (props) => {
 
   useEffect(() => {
     setLayer(true);
-    setOccultLayer(false);
-  }, [videoLink]);
+  });
 
   useEffect(() => {
     setTimeout(() => setLayer(false), 200);
@@ -117,6 +121,7 @@ const Video = (props) => {
 
   const handleLayerState = () => {
     setOccultLayer(true);
+    setLayer(false)
   };
 
   return (

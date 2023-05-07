@@ -20,7 +20,7 @@ import {
 import { FooterContext } from "../Context/FooterContext.js";
 import { createVideo, getCategories } from "../Api/Api.js";
 import { DataContext } from "../Context/DataContext.js";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const NewVideoContainer = styled(Layer)`
@@ -39,8 +39,8 @@ const ButtonRedirect = styled(FormButton)`
 `;
 
 const NewVideo = () => {
-   const { bannerVisibility } = useContext(FooterContext);
-   const { toastifySettings } = useContext(DataContext);
+  const { bannerVisibility } = useContext(FooterContext);
+  const { toastifySettings, ToastifyComponent } = useContext(DataContext);
 
   const [title, setTitle] = useState({ value: "", valid: null });
   const [videoLink, setVideoLink] = useState({ value: "", valid: null });
@@ -133,21 +133,38 @@ const NewVideo = () => {
     },
   ];
 
- 
+  const getCategoryData = async () => {
+    try {
+      const res = await getCategories("/categories");
+      if (res.status === 200 && res.data.length > 0) {
+        setCategories(
+          res.data.map((category) => {
+            return { id: category.id, value: category.title };
+          })
+        );
+      }
+    } catch {
+      toast.error("Error de conexión al servidor", toastifySettings);
+    }
+  };
 
-const getCategoryData = async () => {
-  const res = await getCategories("/categories");
-  if (res.status === 200 && res.data.length > 0) {
-    setCategories(
-      res.data.map((category) => {
-        return { id: category.id, value: category.title };
-      })
-    );
-  }
-};
+  const SendData = async (values) => {
+    try {
+      const res = await createVideo("/videoList", values);
+      if (res.status === 201) {
+        toast.success("Vídeo Creado satisfactoriamente", toastifySettings);
+      }
+    } catch {
+      toast.error(
+        "Ocurrió un error, inténtelo de nuevo más tarde",
+        toastifySettings
+      );
+    }
+  };
+
   useEffect(() => {
     bannerVisibility(true);
-     getCategoryData();
+    getCategoryData();
   }, []);
 
   const cleanForm = () => {
@@ -161,7 +178,7 @@ const getCategoryData = async () => {
 
   const formSubmit = async (e) => {
     e.preventDefault();
-    const res = await createVideo("/videoLink", {
+    SendData({
       title: title.value,
       videoLink: videoLink.value,
       videoImg: backgroundVideo.value,
@@ -169,33 +186,14 @@ const getCategoryData = async () => {
       desc: description.value,
       user: user.value,
     });
-    if (res.status === 201) {
-      toast.success("Vídeo Creado satisfactoriamente", toastifySettings);
-    }
-    if (res.status === 404) {
-      toast.error(
-        "Ocurrió un error, inténtelo de nuevo más tarde",
-        toastifySettings
-      );
-    }
+
     cleanForm();
   };
 
   return (
     <NewVideoContainer>
       <>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
+        <ToastifyComponent />
         <Form onSubmit={formSubmit}>
           <FormTitle>Nuevo Video</FormTitle>
           {formElements.map((element, i) => {

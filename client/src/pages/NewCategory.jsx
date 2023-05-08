@@ -9,9 +9,10 @@ import CategoryList from "../components/CategoryList/CategoryList.jsx";
 import { Layer } from "../components/Layer/Layer.jsx";
 import {
   validateColor,
-  validateTextarea,
-  validateTitle,
-  validateUser,
+  validateTextareaCat,
+  validateTitleCat,
+  validateUserCat,
+  validateEmpty,
 } from "../ValidateForm/Validate.js";
 import { useState, useContext, useEffect } from "react";
 import { FooterContext } from "../Context/FooterContext.js";
@@ -32,13 +33,22 @@ const NewCategory = () => {
   const { toastifySettings, ToastifyComponent, toastMessage } =
     useContext(DataContext);
 
-  const [catTitle, setCatTitle] = useState({ value: "", valid: null });
-  const [catColor, setCatColor] = useState({ value: "#FFBA05", valid: null });
+  const [catTitle, setCatTitle] = useState({
+    value: "",
+    valid: { index: null, value: null },
+  });
+  const [catColor, setCatColor] = useState({
+    value: "#ffba05",
+    valid: { index: null, value: null },
+  });
   const [catDescription, setcatDescription] = useState({
     value: "",
-    valid: null,
+    valid: { index: null, value: null },
   });
-  const [catUser, setCatUser] = useState({ value: "", valid: null });
+  const [catUser, setCatUser] = useState({
+    value: "",
+    valid: { index: null, value: null },
+  });
   const [categoryList, setCategoryList] = useState([]);
 
   const formElements = [
@@ -49,9 +59,21 @@ const NewCategory = () => {
       labelText: "Título",
       placeholder: "Título",
       onChangeFunc(input) {
-        setCatTitle({ value: input, valid: validateTitle(input) });
+        setCatTitle({
+          value: input,
+          valid: validateTitleCat(input, categoryList),
+        });
       },
-      errorMessage: "Ingrese el título del vídeo",
+      onBlurFunc(input) {
+        setCatTitle({
+          value: input,
+          valid: validateTitleCat(input, categoryList),
+        });
+      },
+      errorMessage: [
+        "Ingrese el título del vídeo",
+        "Nombre de categoría existente. Introduzca otro diferente",
+      ],
       options: null,
     },
     {
@@ -61,9 +83,12 @@ const NewCategory = () => {
       labelText: "Color",
       placeholder: null,
       onChangeFunc(input) {
-        setCatColor({ value: input, valid: validateColor(input) });
+        setCatColor({ value: "input", valid: validateColor(input, categoryList) });
       },
-      errorMessage: "Elija el color",
+      onBlurFunc(input) {
+        setCatColor({ value: input, valid: validateColor(input, categoryList) });
+      },
+      errorMessage: ["Elija un color diferente para la categoría"],
       options: null,
     },
     {
@@ -73,9 +98,21 @@ const NewCategory = () => {
       labelText: "Descripción",
       placeholder: "Descripción",
       onChangeFunc(input) {
-        setcatDescription({ value: input, valid: validateTextarea(input) });
+        setcatDescription({
+          value: input,
+          valid: validateTextareaCat(input, categoryList),
+        });
       },
-      errorMessage: "Ingrese una descripción de la categoría",
+      onBlurFunc(input) {
+        setcatDescription({
+          value: "",
+          valid: validateTextareaCat(input, categoryList),
+        });
+      },
+      errorMessage: [
+        "Ingrese una descripción de la categoría",
+        "Descripción existente. Escriba otra diferente",
+      ],
       options: null,
     },
     {
@@ -85,9 +122,18 @@ const NewCategory = () => {
       labelText: "Usuario",
       placeholder: "Usuario",
       onChangeFunc(input) {
-        setCatUser({ value: input, valid: validateUser(input) });
+        setCatUser({ value: input, valid: validateUserCat(input) });
       },
-      errorMessage: "Ingrese el nombre de usuario",
+      onBlurFunc(input) {
+        setCatUser({
+          value: input,
+          valid: validateUserCat(input),
+        });
+      },
+      errorMessage: [
+        "Ingrese el nombre de usuario",
+        "No se acepta contenido vacío, ni caracteres especiales excepto los alfanuméricos, barra baja(_) y guión (-)",
+      ],
       options: null,
     },
   ];
@@ -108,10 +154,22 @@ const NewCategory = () => {
   };
 
   const cleanForm = () => {
-    setCatTitle({ value: "", valid: null });
-    setCatColor({ value: "#FFBA05", valid: null });
-    setcatDescription({ value: "", valid: null });
-    setCatUser({ value: "", valid: null });
+    setCatTitle({
+      value: "",
+      valid: { index: null, value: null },
+    });
+    setCatColor({
+      value: "#FFBA05",
+      valid: { index: null, value: null },
+    });
+    setcatDescription({
+      value: "",
+      valid: { index: null, value: null },
+    });
+    setCatUser({
+      value: "",
+      valid: { index: null, value: null },
+    });
   };
 
   const getCategoryData = async () => {
@@ -136,7 +194,7 @@ const NewCategory = () => {
     }
     if (toastMessage.success === false) {
       toast.error(toastMessage.value, toastifySettings);
-    };
+    }
     getCategoryData();
   }, [toastMessage]);
 
@@ -150,7 +208,6 @@ const NewCategory = () => {
     });
     cleanForm();
   };
-
   return (
     <NewCategoryContainer>
       <>
@@ -158,34 +215,30 @@ const NewCategory = () => {
         <Form onSubmit={formSubmit}>
           <FormTitle>Nueva Categoría</FormTitle>
           {formElements.map((element, i) => {
-            const {
-              formElement,
-              state,
-              type,
-              labelText,
-              placeholder,
-              onChangeFunc,
-              options,
-            } = element;
-
+            const error = element.state.valid.value;
             return (
               <FormWrapper
-                element={formElement}
-                type={type}
-                labelText={labelText}
-                value={state.value}
-                placeholder={placeholder}
-                error={state.valid === false}
-                errorMessage={state.valid === false ? element.errorMessage : ""}
-                onChangeFunc={onChangeFunc}
-                options={options}
+                error={error}
+                errorMessage={
+                  error ? element.errorMessage[element.state.valid.index] : ""
+                }
+                element={element}
                 key={i}
               />
             );
           })}
           <FormButtonsContainer>
             <ButtonsSubmit>
-              <FormButton>Guardar</FormButton>
+              <FormButton
+                disabled={
+                  catTitle.valid.value === true ||
+                  catColor.valid.value === true ||
+                  catDescription.valid.value === true ||
+                  catUser.valid.value === true
+                }
+              >
+                Guardar
+              </FormButton>
               <FormButton $clean onClick={cleanForm}>
                 Limpiar
               </FormButton>

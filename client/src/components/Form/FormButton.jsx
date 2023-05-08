@@ -10,6 +10,11 @@ const FormButton = styled(ButtonStyle)`
     props.$clean ? color_gray_700 : color_primary};
   color: ${(props) => (props.$clean ? color_gray_900 : color_white)};
   width: 135px;
+  transition: all 0.2s ease-in-out;
+  &:disabled{
+    background-color: ${color_gray_700};
+    cursor: none;
+  }
   @media (min-width: 768px) {
     width: 180px;
     padding: 2%;

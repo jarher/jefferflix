@@ -37,7 +37,7 @@ const InputStyle = styled.input`
   color: ${color_gray_300};
   padding-top: 2%;
   width: 100%;
-  height:${(props) => (props.type === "color" ? "6vh" : "auto")};
+  height: ${(props) => (props.type === "color" ? "6vh" : "auto")};
   &:not(:placeholder-shown) + label,
   &:focus + label {
     font-size: ${body_smaller};
@@ -52,10 +52,9 @@ const InputStyle = styled.input`
     visibility: hidden;
     color: #00000000;
   }
-  @media (min-width:768px){
-    height:${(props) => (props.type === "color" ? "8vh" : "auto")}
+  @media (min-width: 768px) {
+    height: ${(props) => (props.type === "color" ? "8vh" : "auto")};
   }
-  
 `;
 
 export const Label = styled.label`
@@ -72,26 +71,22 @@ export const Label = styled.label`
   }
 `;
 
-const Input = ({
-  type,
-  labelText,
-  value,
-  placeholder,
-  error,
-  onChangeFunc,
-}) => {
+const Input = ({error, element}) => {
   const [focus, setFocus] = useState(false);
-
+  const { type, labelText, state, placeholder, onChangeFunc, onBlurFunc } = element;
   return (
     <InputWrapper error={error} focus={focus}>
       <InputStyle
         type={type}
         id={labelText}
-        value={value}
+        value={state.value}
         placeholder={placeholder}
         onChange={(e) => onChangeFunc(e.target.value)}
         onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
+        onBlur={(e) => {
+          setFocus(false);
+          onBlurFunc(e.target.value);
+        }}
         required
       />
       <Label htmlFor={labelText}>{labelText}</Label>

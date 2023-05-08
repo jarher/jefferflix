@@ -104,7 +104,12 @@ const Home = () => {
   const getCategoryData = async () => {
     const res = await getCategories("/categories");
     if (res.status === 200 && res.data.length > 0) {
-      setCategories(res.data);
+      const cat = res.data.map(cat => cat.title).sort();
+      const catList = cat.map(element => {
+        return res.data.filter(cat => cat.title === element)[0];
+      });
+      
+      setCategories(catList);
     }
   };
 

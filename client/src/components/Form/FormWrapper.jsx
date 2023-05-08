@@ -10,48 +10,21 @@ const FormWrapperStyle = styled.div`
   margin-bottom: 5%;
 `;
 
-const FormWrapper = ({
-  element,
-  type,
-  labelText,
-  value,
-  placeholder,
-  error,
-  errorMessage,
-  onChangeFunc,
-  options,
-}) => (
-  <FormWrapperStyle>
-    {element === "input" && (
-      <Input
-        type={type}
-        labelText={labelText}
-        value={value}
-        placeholder={placeholder}
-        onChangeFunc={onChangeFunc}
-        error={error}
-      />
-    )}
-    {element === "select" && (
-      <SelectComp
-        labelText={labelText}
-        onChangeFunc={onChangeFunc}
-        selected={value}
-        options={options}
-        error={error}
-      />
-      
-    )}
-    {element === "textarea" && (
-      <Textarea
-        value={value}
-        placeholder={placeholder}
-        onChangeFunc={onChangeFunc}
-        error={error}
-      />
-    )}
-    {error && <Error message={errorMessage} />}
-  </FormWrapperStyle>
-);
+const FormWrapper = ({error, errorMessage, element }) => {
+  return (
+    <FormWrapperStyle>
+      {element.formElement === "input" && (
+        <Input error={error} element={element} />
+      )}
+      {element.formElement === "select" && (
+        <SelectComp error={error} element={element} />
+      )}
+      {element.formElement === "textarea" && (
+        <Textarea error={error} element={element} />
+      )}
+      {error && <Error message={errorMessage} />}
+    </FormWrapperStyle>
+  );
+};
 
 export default FormWrapper;

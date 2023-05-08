@@ -1,10 +1,5 @@
 import styled from "styled-components";
-import {
-  body_medium,
-  body_smaller,
-  color_gray_300,
-  color_gray_750,
-} from "../../UI/variables.js";
+import { color_gray_300, color_gray_750 } from "../../UI/variables.js";
 import Option from "./Option.jsx";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -47,11 +42,11 @@ const theme = createTheme({
           padding: 0,
           color: color_gray_300,
           paddingLeft: "2%",
-          marginBottom:"2%",
-          border:"none",
-          "&.MuiSelect-outlined":{
-            border:"none"
-          }
+          marginBottom: "2%",
+          border: "none",
+          "&.MuiSelect-outlined": {
+            border: "none",
+          },
         },
       },
     },
@@ -68,20 +63,17 @@ const theme = createTheme({
   },
 });
 
-const SelectComp = ({ labelText, options, onChangeFunc, selected }) => {
+const SelectComp = (props) => {
+  const { labelText, state, options, onChangeFunc } = props.element;
   return (
     <SelectWrapper>
       <ThemeProvider theme={theme}>
         <FormControl fullWidth variant="standard">
-          <InputLabel
-            id="category"
-          >
-            {labelText}
-          </InputLabel>
+          <InputLabel id="category">{labelText}</InputLabel>
           <Select
             labelId="category"
             id="category"
-            value={selected}
+            value={state.value}
             label="category"
             onChange={(e) => onChangeFunc(e.target.value)}
           >

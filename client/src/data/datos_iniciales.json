@@ -76,6 +76,13 @@
       "desc": "Géneros y subgéneros variados, trance, tecno, house, ambient, synthwave y más",
       "user": "Jeffer Rojas",
       "id": "fd267857-da0f-4f36-aaa1-72bda7ab6f45"
+    },
+    {
+      "id": "78f9a2e9-00fc-4d8f-ad55-c66b402c27f8",
+      "title": "Programación",
+      "color": "#ffba05",
+      "desc": "Lenguajes de programación, arquitecturas, buenas prácticas, librerías y más",
+      "user": "jeffer rojas"
     }
   ]
 }

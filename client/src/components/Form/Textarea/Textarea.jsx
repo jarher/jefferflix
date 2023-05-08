@@ -18,18 +18,21 @@ const TextareaStyle = styled.textarea`
   }
 `;
 
-const Textarea = ({ value, placeholder, onChangeFunc, error }) => {
-
+const Textarea = ({error, element}) => {
   const [focus, setFocus] = useState(false);
+  const {state, placeholder, onChangeFunc, onBlurFunc} = element;
 
   return (
     <InputWrapper error={error} focus={focus}>
       <TextareaStyle
-        value={value}
+        value={state.value}
         placeholder={placeholder}
         onChange={(e) => onChangeFunc(e.target.value)}
         onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
+        onBlur={(e) => {
+          setFocus(false);
+          onBlurFunc(e.target.value);
+        }}
       />
     </InputWrapper>
   );

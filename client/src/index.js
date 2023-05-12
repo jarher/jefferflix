@@ -4,13 +4,16 @@ import "normalize.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { FooterProvider } from "./Context/FooterContext";
+import { DataProvider } from "./Context/DataContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <FooterProvider>
-      <App />
-    </FooterProvider>
+    <DataProvider>
+      <FooterProvider>
+        <App />
+      </FooterProvider>
+    </DataProvider>
   </React.StrictMode>
 );
 

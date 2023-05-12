@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import Banner from "../Banner/Banner.jsx";
 import {
-  color_black, color_gray_lighter, color_primary,
+  color_black,
+  color_gray_lighter,
+  color_primary,
 } from "../UI/variables.js";
 import ButtonStyle from "../Button/Button.jsx";
 import { Link } from "react-router-dom";
@@ -13,7 +15,7 @@ const HeaderStyle = styled.header`
   align-items: center;
   justify-content: center;
   background-color: ${color_black};
-  border-bottom:1px solid ${color_primary};
+  border-bottom: 1px solid ${color_primary};
   padding: 4%;
   box-sizing: border-box;
   position: fixed;
@@ -38,20 +40,24 @@ const ButtonHeader = styled(ButtonStyle)`
 `;
 
 const Header = () => {
-  
-  const {alertMessage, setAlert_Message} = useContext(DataContext);
-
+  const { userState } = useContext(DataContext);
   
   return (
-  <HeaderStyle>
-    <>
-      
-      <Banner />
-      <ButtonHeader>
-        <Link to="/newVideo">Nuevo Video</Link>
-      </ButtonHeader>
-    </>
-  </HeaderStyle>
-)};
+    <HeaderStyle>
+      <>
+        <Banner />
+        <ButtonHeader>
+          {userState.isLogin ? (
+            <Link to="/newVideo">Nuevo Video</Link>
+          ) : userState.isRegister ? (
+            <Link to="/Login">Iniciar Sesión</Link>
+          ) : (
+            <Link to="/register">Registrarse</Link>
+          )}
+        </ButtonHeader>
+      </>
+    </HeaderStyle>
+  );
+};
 
 export default Header;

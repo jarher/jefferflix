@@ -8,7 +8,7 @@ import {
 } from "../UI/variables";
 import ButtonStyle from "../Button/Button";
 import { Link } from "react-router-dom";
-import { deleteCategory } from "../../Api/Api";
+import { createVideo, deleteCategory, deleteVideo, updateVideoList } from "../../Api/Api";
 import { useContext } from "react";
 import { DataContext } from "../../Context/DataContext";
 
@@ -81,18 +81,25 @@ const ButtonEdit = styled(ButtonStyle)`
 `;
 
 const Content = ({ name, desc, id }) => {
-  const {set_Toast_Message} = useContext(DataContext);
-
-  const delCat = async () =>{
-      try {
-        const res = await deleteCategory(`/categories/${id}`);
-        if (res.status === 200) {
-          set_Toast_Message({value:"Categoría eliminada", success:true});
-        }
-      } catch {
-        set_Toast_Message({value:"Error de conexión al servidor", success:false});
-      }
-  }
+  const { set_Toast_Message, video_List_Context } = useContext(DataContext);
+  
+  const delCat = async () => {
+    try {
+      // const delCat = await deleteCategory(`/categories/${id}`);
+      // const videoRes = await createVideo("/videoList", videoList);
+      const videoList = video_List_Context.filter((video) => video.category !== name);
+      const res = await deleteVideo("/videoList"); 
+      console.log(res);
+      // if (delCat.status === 200) {
+      //   set_Toast_Message({ value: "Categoría eliminada", success: true });
+      // }
+    } catch {
+      // set_Toast_Message({
+      //   value: "Error de conexión al servidor",
+      //   success: false,
+      // });
+    }
+  };
   return (
     <CategoryRow>
       <CategoryCol>{name}</CategoryCol>

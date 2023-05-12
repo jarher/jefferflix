@@ -7,36 +7,50 @@ export const api = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-export const getVideoList = async(url) => {
-    return await api.get(url);
-}
-
-export const createVideo = async(url, getData) => {
-    return await api.post(url, { id: uuidv4(), ...getData });
-}
-
-export const deleteVideo = async(url) => {
-  return await api.delete(url);
-}
-
-export const getCategories = async(url) => {
+//crud videos
+export const getVideoList = async (url) => {
   return await api.get(url);
-  
-}
+};
 
-export const getCategory = async(url) => {
-  return await api.get(url)
-}
-
-export const createCategory = async(url, getData) => {
-    return await api.post(url, { id: uuidv4(), ...getData });
-}
-
-export const updateCategory = async(url, getData) => {
-  return await api.put(url, getData );
-}
-
-export const deleteCategory = async(url) => {
+export const createVideo = async (url, data) => {
+  return await api.post(url, { id: uuidv4(), ...data });
+};
+export const deleteVideo = async (url) => {
   return await api.delete(url);
-}
+};
+//crud categories
+export const getCategories = async (url) => {
+  return await api.get(url);
+};
+
+export const getCategory = async (url) => {
+  return await api.get(url);
+};
+
+export const createCategory = async (url, data) => {
+  return await api.post(url, { id: uuidv4(), ...data });
+};
+
+export const updateCategory = async (url, data) => {
+  return await api.put(url, data);
+};
+
+export const deleteCategory = async (url) => {
+  return await api.delete(url);
+};
+// crud user
+export const createUser = async (url, data) => {
+  return await api.post(url, { id: uuidv4(), ...data });
+};
+export const getUser = async (url) => {
+  return await api.get(url);
+};
+// export const getAllUsers = async(url) => {
+//   return await api.get(url);
+// }
+export const updateUser = async (url, data) => {
+  return await api.put(url, data);
+};
+export const deleteUser = async (url) => {
+  return await api.delete(url);
+};

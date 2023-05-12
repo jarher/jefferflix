@@ -7,19 +7,19 @@ import NewCategory from "./pages/NewCategory.jsx";
 import Error404 from "./pages/Error404.jsx";
 import Edit from "./pages/Edit.jsx";
 import GlobalStyle from "./global.js";
-import { DataProvider } from "./Context/DataContext.js";
 import { useWindowSize } from "react-use";
+import Register from "./pages/Register.jsx";
+import Login from "./pages/Login.jsx";
 
 function App() {
-
-   const Layout = () => {
+  const Layout = () => {
     const { width } = useWindowSize();
     return (
       <>
         <GlobalStyle />
         <Header />
         <Outlet />
-        <Footer windowWidth={width}/>
+        <Footer windowWidth={width} />
       </>
     );
   };
@@ -33,16 +33,14 @@ function App() {
         { path: "/newVideo", element: <NewVideo /> },
         { path: "/newCategory", element: <NewCategory /> },
         { path: "/newCategory/:id/edit", element: <Edit /> },
-        { path: "*", element: <Error404 /> },
+        { path: "/login", element: <Login /> },
+        { path: "/register", element: <Register /> },
+        { path: "*", element: <Error404 />}
       ],
     },
   ]);
 
-  return (
-    <DataProvider>
-      <RouterProvider router={router} />
-    </DataProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

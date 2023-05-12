@@ -18,8 +18,9 @@ import {
   validateUser,
 } from "../ValidateForm/Validate.js";
 import { FooterContext } from "../Context/FooterContext.js";
-import { createVideo, getCategories } from "../Api/Api.js";
+import { createVideo, getCategories, getUser } from "../Api/Api.js";
 import { DataContext } from "../Context/DataContext.js";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -40,22 +41,44 @@ const ButtonRedirect = styled(FormButton)`
 
 const NewVideo = () => {
   const { bannerVisibility } = useContext(FooterContext);
-  const { toastifySettings, ToastifyComponent } = useContext(DataContext);
+  const {
+    toastifySettings,
+    ToastifyComponent,
+    video_List_Context,
+    filterUser,
+  } = useContext(DataContext);
 
-  const [title, setTitle] = useState({ value: "", valid: null });
-  const [videoLink, setVideoLink] = useState({ value: "", valid: null });
+  const [title, setTitle] = useState({
+    value: "",
+    valid: { index: null, value: null },
+  });
+  const [videoLink, setVideoLink] = useState({
+    value: "",
+    valid: { index: null, value: null },
+  });
   const [backgroundVideo, setBackgroundVideo] = useState({
     value: "",
-    valid: null,
+    valid: { index: null, value: null },
   });
   const [categorySelected, setCategorySelected] = useState({
     value: "",
-    valid: null,
+    valid: { index: null, value: null },
   });
-  const [description, setDescription] = useState({ value: "", valid: null });
-  const [user, setUser] = useState({ value: "", valid: null });
+  const [description, setDescription] = useState({
+    value: "",
+    valid: { index: null, value: null },
+  });
+  const [user, setUser] = useState({
+    value: "",
+    valid: { index: null, value: null },
+  });
+  const [userSession, setUserSession] = useState({});
+  const [users, setUsers] = useState([]);
+  const [isSending, setIsSending] = useState(false);
 
   const [categories, setCategories] = useState([]);
+
+  const navigate = useNavigate();
 
   const formElements = [
     {
@@ -65,9 +88,21 @@ const NewVideo = () => {
       labelText: "Título",
       placeholder: "Título",
       onChangeFunc(input) {
-        setTitle({ value: input, valid: validateTitle(input) });
+        setTitle({
+          value: input,
+          valid: validateTitle(input, video_List_Context),
+        });
       },
-      errorMessage: "Ingrese el título del vídeo",
+      onBlurFunc(input) {
+        setTitle({
+          value: input,
+          valid: validateTitle(input, video_List_Context),
+        });
+      },
+      errorMessage: [
+        "Ingrese el título del vídeo",
+        "Título del vídeo existente. Introduzca otro diferente",
+      ],
       options: null,
     },
     {
@@ -77,9 +112,22 @@ const NewVideo = () => {
       labelText: "Link del vídeo",
       placeholder: "Link del vídeo",
       onChangeFunc(input) {
-        setVideoLink({ value: input, valid: validateVideoLink(input) });
+        setVideoLink({
+          value: input,
+          valid: validateVideoLink(input, video_List_Context),
+        });
       },
-      errorMessage: "Url Inválida",
+      onBlurFunc(input) {
+        setVideoLink({
+          value: input,
+          valid: validateVideoLink(input, video_List_Context),
+        });
+      },
+      errorMessage: [
+        "Introduzca la Url del vídeo",
+        "Url Inválida",
+        "Url existente. Ingrese otra Url diferente",
+      ],
       options: null,
     },
     {
@@ -89,9 +137,22 @@ const NewVideo = () => {
       labelText: "Link de la imagen del vídeo",
       placeholder: "Link de la imagen del vídeo",
       onChangeFunc(input) {
-        setBackgroundVideo({ value: input, valid: validateImgUrl(input) });
+        setBackgroundVideo({
+          value: input,
+          valid: validateImgUrl(input, video_List_Context),
+        });
       },
-      errorMessage: "Url Inválida",
+      onBlurFunc(input) {
+        setBackgroundVideo({
+          value: input,
+          valid: validateImgUrl(input, video_List_Context),
+        });
+      },
+      errorMessage: [
+        "Introduzca la Url de la imagen del vídeo",
+        "Url Inválida",
+        "Url existente. Ingrese otra Url diferente",
+      ],
       options: null,
     },
     {
@@ -100,10 +161,19 @@ const NewVideo = () => {
       state: categorySelected,
       labelText: "Seleccione una Categoría",
       placeholder: null,
-      onChangeFunc(value) {
-        setCategorySelected({ value: value, valid: validateSelect(value) });
+      onChangeFunc(input) {
+        setCategorySelected({
+          value: input,
+          valid: validateSelect(input),
+        });
       },
-      errorMessage: "Seleccione una categoría",
+      onBlurFunc(input) {
+        setCategorySelected({
+          value: input,
+          valid: validateSelect(input),
+        });
+      },
+      errorMessage: ["Por favor seleccione una categoría"],
       options: categories,
     },
     {
@@ -112,10 +182,22 @@ const NewVideo = () => {
       state: description,
       labelText: null,
       placeholder: "Descripción",
-      onChangeFunc(value) {
-        setDescription({ value: value, valid: validateTextarea(value) });
+      onChangeFunc(input) {
+        setDescription({
+          value: input,
+          valid: validateTextarea(input, video_List_Context),
+        });
       },
-      errorMessage: "Ingrese una descripción del vídeo",
+      onBlurFunc(input) {
+        setDescription({
+          value: input,
+          valid: validateTextarea(input, video_List_Context),
+        });
+      },
+      errorMessage: [
+        "Ingrese una descripción del vídeo",
+        "Descripción existente. Introduzca otra diferente",
+      ],
       options: null,
     },
     {
@@ -125,26 +207,61 @@ const NewVideo = () => {
       labelText: "Usuario",
       placeholder: "Usuario",
       onChangeFunc(input) {
-        setUser({ value: input, valid: validateUser(input) });
+        setUser({
+          value: input,
+          valid: validateUser(input, video_List_Context, users, userSession),
+        });
       },
-      errorMessage:
+      onBlurFunc(input) {
+        setUser({
+          value: input,
+          valid: validateUser(input, users, userSession),
+        });
+      },
+      errorMessage: [
+        "Introduzca un nombre de usuario",
         "No se acepta contenido vacío, ni caracteres especiales excepto los alfanuméricos, barra baja(_) y guión (-)",
+        "Nombre de usuario incompatible. Por favor ingrese el nombre correcto",
+      ],
       options: null,
     },
   ];
+
+  const getUsers = async () => {
+    try {
+      const res = await getUser("/user");
+      if (res.status === 200) {
+        setUsers(res.data);
+      }
+    } catch {
+      toast.error("Error de conexión al servidor", toastifySettings);
+    }
+  };
+
+  // const filterUser = () =>
+  //   users.filter((user) => user.useremail === userSession.userEmail)[0];
 
   const getCategoryData = async () => {
     try {
       const res = await getCategories("/categories");
       if (res.status === 200 && res.data.length > 0) {
+        const selectUser = filterUser(users, userSession);
+        const catUser = res.data.filter(
+          (data) => data.user === selectUser.username
+        );
         setCategories(
-          res.data.map((category) => {
+          catUser.map((category) => {
             return { id: category.id, value: category.title };
           })
         );
+      } else {
+        toast.error("Error, recurso no encontrado");
       }
     } catch {
-      toast.error("Error de conexión al servidor", toastifySettings);
+      toast.error(
+        "No existe categoría para el vídeo. Por favor crea una",
+        toastifySettings
+      );
     }
   };
 
@@ -153,6 +270,7 @@ const NewVideo = () => {
       const res = await createVideo("/videoList", values);
       if (res.status === 201) {
         toast.success("Vídeo Creado satisfactoriamente", toastifySettings);
+        setIsSending(true);
       }
     } catch {
       toast.error(
@@ -162,33 +280,64 @@ const NewVideo = () => {
     }
   };
 
-  useEffect(() => {
-    bannerVisibility(true);
-    getCategoryData();
-  }, []);
-
   const cleanForm = () => {
-    setTitle({ value: "", valid: null });
-    setVideoLink({ value: "", valid: null });
-    setBackgroundVideo({ value: "", valid: null });
-    setCategorySelected({ value: "", valid: null });
-    setDescription({ value: "", valid: null });
-    setUser({ value: "", valid: null });
+    setTitle({
+      value: "",
+      valid: { index: null, value: null },
+    });
+    setVideoLink({
+      value: "",
+      valid: { index: null, value: null },
+    });
+    setBackgroundVideo({
+      value: "",
+      valid: { index: null, value: null },
+    });
+    setCategorySelected({
+      value: "",
+      valid: { index: null, value: null },
+    });
+    setDescription({
+      value: "",
+      valid: { index: null, value: null },
+    });
+    setUser({
+      value: "",
+      valid: { index: null, value: null },
+    });
   };
 
   const formSubmit = async (e) => {
     e.preventDefault();
-    SendData({
-      title: title.value,
-      videoLink: videoLink.value,
-      videoImg: backgroundVideo.value,
-      category: categorySelected.value,
-      desc: description.value,
-      user: user.value,
-    });
+    const selectUser = filterUser();
+    if (selectUser.username === user.value) {
+      SendData({
+        title: title.value,
+        videoLink: videoLink.value,
+        videoImg: backgroundVideo.value,
+        category: categorySelected.value,
+        desc: description.value,
+        user: user.value,
+      });
+    } else {
+      toast.error("Usuario incorrecto. Por favor inténtelo de nuevo");
+    }
 
     cleanForm();
   };
+
+  useEffect(() => {
+    bannerVisibility(true);
+    getCategoryData();
+    getUsers();
+    setUserSession(JSON.parse(localStorage.getItem("userSession")));
+  }, []);
+
+  useEffect(() => {
+    if (isSending) {
+      setTimeout(() => navigate("/"), 5000);
+    }
+  }, [isSending]);
 
   return (
     <NewVideoContainer>
@@ -197,33 +346,32 @@ const NewVideo = () => {
         <Form onSubmit={formSubmit}>
           <FormTitle>Nuevo Video</FormTitle>
           {formElements.map((element, i) => {
-            const {
-              formElement,
-              state,
-              type,
-              labelText,
-              placeholder,
-              onChangeFunc,
-            } = element;
-
+            const error = element.state.valid.value;
             return (
               <FormWrapper
-                element={formElement}
-                type={type}
-                labelText={labelText}
-                value={state.value}
-                placeholder={placeholder}
-                error={state.valid === false}
-                errorMessage={state.valid === false ? element.errorMessage : ""}
-                onChangeFunc={onChangeFunc}
-                options={categories}
+                error={error}
+                errorMessage={
+                  error ? element.errorMessage[element.state.valid.index] : ""
+                }
+                element={element}
                 key={i}
               />
             );
           })}
           <FormButtonsContainer>
             <ButtonsSubmit>
-              <FormButton>Guardar</FormButton>
+              <FormButton
+                disabled={
+                  title.valid.value === true ||
+                  videoLink.valid.value === true ||
+                  backgroundVideo.valid.value === true ||
+                  categorySelected.valid.value === true ||
+                  description.valid.value === true ||
+                  user.valid.value === true
+                }
+              >
+                Guardar
+              </FormButton>
               <FormButton $clean onClick={cleanForm}>
                 Limpiar
               </FormButton>

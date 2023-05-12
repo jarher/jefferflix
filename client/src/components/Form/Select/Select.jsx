@@ -63,8 +63,8 @@ const theme = createTheme({
   },
 });
 
-const SelectComp = (props) => {
-  const { labelText, state, options, onChangeFunc } = props.element;
+const SelectComp = ({error, element}) => {
+  const { labelText, state, options, onChangeFunc, onBlurFunc } = element;
   return (
     <SelectWrapper>
       <ThemeProvider theme={theme}>
@@ -76,6 +76,7 @@ const SelectComp = (props) => {
             value={state.value}
             label="category"
             onChange={(e) => onChangeFunc(e.target.value)}
+            onBlur={(e) => onBlurFunc(e.target.value)}
           >
             {options.map((option) => (
               <MenuItem value={option.value} key={option.id}>

@@ -10,16 +10,15 @@ import { Layer } from "../components/Layer/Layer";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import {
-  validateColor,
-  validateTextarea,
-  validateTitle,
-  validateUser,
+  validateColorEdit,
+  validateTextareaEdit,
+  validateTitleEdit,
+  validateUserEdit,
 } from "../ValidateForm/Validate.js";
-import { getCategory, updateCategory, deleteCategory } from "../Api/Api";
+import { getCategory, updateCategory } from "../Api/Api";
 import { useContext } from "react";
 import { DataContext } from "../Context/DataContext";
 import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 const EditStyle = styled(Layer)`
   padding: 5%;
@@ -31,14 +30,22 @@ const EditStyle = styled(Layer)`
 const Edit = () => {
   const { toastifySettings, ToastifyComponent } = useContext(DataContext);
 
-  const [catTitle, setCatTitle] = useState({ value: "", valid: null });
-  const [catColor, setCatColor] = useState({ value: "#FFBA05", valid: null });
+  const [catTitle, setCatTitle] = useState({
+    value: "",
+    valid: { index: null, value: null },
+  });
+  const [catColor, setCatColor] = useState({
+    value: "#ffba05",
+    valid: { index: null, value: null },
+  });
   const [catDescription, setcatDescription] = useState({
     value: "",
-    valid: null,
+    valid: { index: null, value: null },
   });
-  const [catUser, setCatUser] = useState({ value: "", valid: null });
-  
+  const [catUser, setCatUser] = useState({
+    value: "",
+    valid: { index: null, value: null },
+  });
 
   const { id } = useParams();
 
@@ -50,9 +57,13 @@ const Edit = () => {
       labelText: "Título",
       placeholder: "Título",
       onChangeFunc(input) {
-        setCatTitle({ value: input, valid: validateTitle(input) });
+        setCatTitle({ value: input, valid: validateTitleEdit(input) });
       },
-      errorMessage: "Ingrese el título del vídeo",
+      onBlurFunc(input) {
+        return null
+        // setCatTitle({ value: input, valid: validateTitleEdit(input) });
+      },
+      errorMessage: ["Ingrese el título del vídeo"],
       options: null,
     },
     {
@@ -62,9 +73,13 @@ const Edit = () => {
       labelText: "Color",
       placeholder: null,
       onChangeFunc(input) {
-        setCatColor({ value: input, valid: validateColor(input) });
+        setCatColor({ value: input, valid: validateColorEdit(input) });
       },
-      errorMessage: "Elija el color",
+      onBlurFunc(input) {
+        return null;
+        // setCatColor({ value: input, valid: validateColorEdit(input) });
+      },
+      errorMessage: ["Elija un color"],
       options: null,
     },
     {
@@ -74,9 +89,13 @@ const Edit = () => {
       labelText: "Descripción",
       placeholder: "Descripción",
       onChangeFunc(input) {
-        setcatDescription({ value: input, valid: validateTextarea(input) });
+        setcatDescription({ value: input, valid: validateTextareaEdit(input) });
       },
-      errorMessage: "Ingrese una descripción de la categoría",
+      onBlurFunc(input) {
+        return null;
+        // setcatDescription({ value: input, valid: validateTextareaEdit(input) });
+      },
+      errorMessage: ["Ingrese una descripción de la categoría"],
       options: null,
     },
     {
@@ -86,18 +105,34 @@ const Edit = () => {
       labelText: "Usuario",
       placeholder: "Usuario",
       onChangeFunc(input) {
-        setCatUser({ value: input, valid: validateUser(input) });
+        setCatUser({ value: input, valid: validateUserEdit(input) });
       },
-      errorMessage: "Ingrese el nombre de usuario",
+      onBlurFunc(input) {
+        return null;
+        // setCatUser({ value: input, valid: validateUserEdit(input) });
+      },
+      errorMessage: ["Ingrese el nombre de usuario"],
       options: null,
     },
   ];
 
   const cleanForm = () => {
-    setCatTitle({ value: "", valid: null });
-    setCatColor({ value: "#FFBA05", valid: null });
-    setcatDescription({ value: "", valid: null });
-    setCatUser({ value: "", valid: null });
+    setCatTitle({
+      value: "",
+      valid: { index: null, value: null },
+    });
+    setCatColor({
+      value: "#FFBA05",
+      valid: { index: null, value: null },
+    });
+    setcatDescription({
+      value: "",
+      valid: { index: null, value: null },
+    });
+    setCatUser({
+      value: "",
+      valid: { index: null, value: null },
+    });
   };
 
   const getCategoryData = async () => {
@@ -106,10 +141,10 @@ const Edit = () => {
 
       if (res.status === 200) {
         const { title, color, desc, user } = res.data;
-        setCatTitle({ value: title, valid: null });
-        setCatColor({ value: color, valid: null });
-        setcatDescription({ value: desc, valid: null });
-        setCatUser({ value: user, valid: null });
+        setCatTitle({ value: title, valid: { index: null, value: null } });
+        setCatColor({ value: color, valid: { index: null, value: null } });
+        setcatDescription({ value: desc, valid: { index: null, value: null } });
+        setCatUser({ value: user, valid: { index: null, value: null } });
       }
     } catch {
       toast.error("Error de conexión al servidor", toastifySettings);
@@ -151,34 +186,30 @@ const Edit = () => {
         <Form onSubmit={formSubmit}>
           <FormTitle>Editar Categoría</FormTitle>
           {formElements.map((element, i) => {
-            const {
-              formElement,
-              state,
-              type,
-              labelText,
-              placeholder,
-              onChangeFunc,
-              options,
-            } = element;
-
+            const error = element.state.valid.value;
             return (
               <FormWrapper
-                element={formElement}
-                type={type}
-                labelText={labelText}
-                value={state.value}
-                placeholder={placeholder}
-                error={state.valid === false}
-                errorMessage={state.valid === false ? element.errorMessage : ""}
-                onChangeFunc={onChangeFunc}
-                options={options}
+                error={error}
+                errorMessage={
+                  error ? element.errorMessage[element.state.valid.index] : ""
+                }
+                element={element}
                 key={i}
               />
             );
           })}
           <FormButtonsContainer>
             <ButtonsSubmit>
-              <FormButton>Guardar</FormButton>
+              <FormButton
+                disabled={
+                  catTitle.valid.value === true ||
+                  catColor.valid.value === true ||
+                  catDescription.valid.value === true ||
+                  catUser.valid.value === true
+                }
+              >
+                Editar
+              </FormButton>
               <FormButton $clean onClick={cleanForm}>
                 Limpiar
               </FormButton>

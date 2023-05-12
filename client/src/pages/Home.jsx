@@ -12,13 +12,17 @@ import {
 } from "../components/UI/variables.js";
 import { MultipleItems } from "../components/Carousel/Slider/Slider.jsx";
 import Video from "../components/Video/Video.jsx";
-import { getVideoList, deleteVideo, getCategories } from "../Api/Api.js";
+import {
+  getVideoList,
+  deleteVideo,
+  getCategories,
+  getUser,
+} from "../Api/Api.js";
 import { DataContext } from "../Context/DataContext.js";
 import { FooterContext } from "../Context/FooterContext.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useWindowSize } from "react-use";
-
 
 export const HomeStyled = styled(Layer)``;
 
@@ -81,20 +85,43 @@ const ModalButtonsWrapper = styled.div`
 const ModalButton = styled(ButtonStyle)``;
 
 const Home = () => {
-  const { videoId, set_videoID, modalMessage, set_Modal_Message } =
-    useContext(DataContext);
-  const { bannerVisibility } = useContext(FooterContext);
-  const {toastifySettings, ToastifyComponent} = useContext(DataContext);
+  const {
+    set_Video_Context,
+    videoId,
+    set_videoID,
+    modalMessage,
+    set_Modal_Message,
+    toastifySettings,
+    ToastifyComponent,
+  } = useContext(DataContext);
 
-  const [videoList, setVideoList] = useState([]);
+  const { bannerVisibility } = useContext(FooterContext);
+
   const [categories, setCategories] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [userVideos, setUserVideos] = useState([]);
+  const [userSession, setUserSession] = useState({});
+
+  const { width } = useWindowSize();
 
   const getVideoData = async () => {
     try {
       const res = await getVideoList("/videoList");
-      if (res.status === 200 && res.data.length > 0) {
-        set_videoID(res.data[0].id);
-        setVideoList(res.data);
+      if (res.status === 200) {
+        const Session = JSON.parse(localStorage.getItem("userSession"));
+        if (Session) {
+          const { useremail } = Session;
+          const user = users.filter((user) => user.useremail === useremail)[0];
+          console.log(useremail, user);
+          // const userVid = res.data.filter(
+          //   (video) => video.user === user.username
+          // );
+          // setUserVideos(userVid);
+          // set_videoID(userVid[0].id);
+          // setUserSession(Session);
+          // set_Video_Context(res.data);
+        }
+        
       }
     } catch {
       toast.error("Error de conexión al servidor", toastifySettings);
@@ -104,12 +131,27 @@ const Home = () => {
   const getCategoryData = async () => {
     const res = await getCategories("/categories");
     if (res.status === 200 && res.data.length > 0) {
-      const cat = res.data.map(cat => cat.title).sort();
-      const catList = cat.map(element => {
-        return res.data.filter(cat => cat.title === element)[0];
+      const user = users.filter(
+        (user) => user.useremail === userSession.userEmail
+      );
+      const userCat = res.data.filter((cat) => cat.user === user.username);
+      const cat = userCat.map((cat) => cat.title).sort();
+      const catList = cat.map((element) => {
+        return userCat.filter((cat) => cat.title === element)[0];
       });
-      
+
       setCategories(catList);
+    }
+  };
+
+  const getUsers = async () => {
+    try {
+      const res = await getUser("/user");
+      if (res.status === 200) {
+        setUsers(res.data);
+      }
+    } catch {
+      toast.error("Error de conexión al servidor", toastifySettings);
     }
   };
 
@@ -139,32 +181,31 @@ const Home = () => {
     );
   }
 
-  const categoryInVideo = videoList.map((video) => video.category);
+  const categoryInVideo = userVideos.map((video) => video.category);
 
-  const { width } = useWindowSize();
+  useEffect(() => {
+    getUsers();
+    getCategoryData();
+    getVideoData();
+  }, []);
 
   useEffect(() => {
     if (width >= 768) {
       bannerVisibility(true);
-    }else{
-      bannerVisibility(false)
+    } else {
+      bannerVisibility(false);
     }
   });
-
-  useEffect(() => {
-    getVideoData();
-    getCategoryData();
-  }, []);
 
   return (
     <HomeStyled>
       <>
         <ToastifyComponent />
         {modalMessage && <ModalMessage message={modalMessage} />}
-        {videoList.length > 0 && (
+        {userVideos.length > 0 && (
           <>
             <Video
-              video={videoList.filter((video) => video.id === videoId)[0]}
+              video={userVideos.filter((video) => video.id === videoId)[0]}
             />
             <CarouselWrapper>
               {categories.map((category) => (
@@ -178,7 +219,7 @@ const Home = () => {
                     </>
                   )}
                   <MultipleItems
-                    elements={videoList.filter(
+                    elements={userVideos.filter(
                       (video) => video.category === category.title
                     )}
                     color={category.color}
